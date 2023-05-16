@@ -1,4 +1,4 @@
-package com.jaehyun.store.dto;
+package com.jaehyun.store.model.dto;
 
 import lombok.*;
 
@@ -11,12 +11,12 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreDto {
+public class UserDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String storeId;
+    private Long userId;
 
-    private String storeName; //매장 이름
-    private String storeLocation; //매장 위치
-    private String storeDescription; //매장 설명
+    private String userName;
+    private String userEmail;
+    private String userPassword;
 }

@@ -1,4 +1,4 @@
-package com.jaehyun.store.dto;
+package com.jaehyun.store.model.dto;
 
 import lombok.*;
 
@@ -11,12 +11,12 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReviewDto {
+public class PartnerDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewId;
+    private Long partnerId;
 
-    private Long userId;
-    private Long storeId;
-    private String reviewText;
+    private String partnerName;
+    private String partnerEmail;
+    private String partnerPassword;
 }

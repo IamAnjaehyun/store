@@ -1,24 +1,22 @@
-package com.jaehyun.store.dto;
+package com.jaehyun.store.model.dto;
 
 import lombok.*;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReservationDto {
+public class StoreDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reservationId;
-
-    private Long userId;
     private Long storeId;
-    private LocalDateTime reservationTime;
-    private boolean isConfirmed;
+
+    private String storeName; //매장 이름
+    private String storeLocation; //매장 위치
+    private String storeDescription; //매장 설명
 }
