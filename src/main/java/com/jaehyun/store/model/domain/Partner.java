@@ -9,9 +9,9 @@ import javax.persistence.Id;
 public class Partner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long partnerId;
+    private Long partnerId; //파트너 번호
 
-    private String partnerName;
-    private String partnerEmail;
-    private String partnerPassword;
+    private String partnerName; //파트너 이름
+    private String partnerEmail;//파트너 email
+    private String partnerPassword;//파트너 비밀번호
 }
