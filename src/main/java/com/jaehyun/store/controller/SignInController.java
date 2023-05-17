@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SignInController {
     //회원가입
-    
+
 
 }
