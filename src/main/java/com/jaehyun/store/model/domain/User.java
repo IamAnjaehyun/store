@@ -43,6 +43,9 @@ public class User extends BaseEntity implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
     @Override
     public String getPassword() {
         return null;
