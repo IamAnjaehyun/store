@@ -66,7 +66,7 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "TOKEN값'
+    // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "Bearer +TOKEN값'
     public String resolveToken(HttpServletRequest request) {
         String token = request.getHeader((TOKEN_HEADER));
 
@@ -86,4 +86,12 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
+    public boolean userHasAdminRole(String token) {
+        String userPk = getUserPk(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userPk);
+        // 사용자의 권한 중에 "ADMIN"이 있는지 확인합니다.
+        return userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ADMIN"));
+    }
+
 }
