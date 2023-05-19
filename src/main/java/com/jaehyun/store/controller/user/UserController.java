@@ -30,17 +30,7 @@ public class UserController {
                 .build()).getUserId();
     }
 
-    //    // 로그인
-//    @PostMapping("/login")
-//    public String login(@RequestBody Map<String, String> user) {
-//        User member = userRepository.findByUserPhoneNum(user.get("userPhoneNum"))
-//                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 userPhoneNum 입니다."));
-//        if (!passwordEncoder.matches(user.get("userPassword"), member.getPassword())) {
-//            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-//        }
-//        return jwtTokenProvider.createToken(member.getUserPhoneNum(), member.getRoles());
-//    }
-// 로그인
+    // 로그인
     @PostMapping("/login")
     public String login(@RequestBody Map<String, String> user) {
         User member = userRepository.findByUserPhoneNum(user.get("userPhoneNum"))
@@ -50,4 +40,5 @@ public class UserController {
         }
         return jwtTokenProvider.createToken(member.getUserPhoneNum(), member.getRoles());
     }
+
 }

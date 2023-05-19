@@ -1,6 +1,7 @@
 package com.jaehyun.store.model.domain;
 
 import com.jaehyun.store.model.BaseEntity;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 
 @Entity
 @Setter
+@Getter
 public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

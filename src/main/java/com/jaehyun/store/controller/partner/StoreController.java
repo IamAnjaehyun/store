@@ -1,6 +1,8 @@
 package com.jaehyun.store.controller.partner;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jaehyun.store.config.JwtTokenProvider;
 import com.jaehyun.store.model.domain.Store;
 import com.jaehyun.store.model.dto.StoreDto;
@@ -8,19 +10,19 @@ import com.jaehyun.store.model.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
-@RequestMapping("/partner")
+@RequestMapping("/store")
 @RequiredArgsConstructor
 public class StoreController {
     private final StoreRepository storeRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ObjectMapper objectMapper;
+
     @PostMapping("/register")
     public ResponseEntity<String> registerStore(@RequestBody StoreDto storeDto, HttpServletRequest request) {
         // 토큰을 해석하여 사용자 정보를 가져옵니다.
@@ -39,6 +41,12 @@ public class StoreController {
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only ADMIN users can register a store.");
         }
+    }
+
+    @GetMapping("/view")
+    public String getAllStores() throws JsonProcessingException {
+        List<Store> stores = storeRepository.findAll();
+        return objectMapper.writeValueAsString(stores);
     }
 }
 
