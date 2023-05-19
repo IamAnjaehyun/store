@@ -87,11 +87,20 @@ public class JwtTokenProvider {
         }
     }
 
+    //권한이 ADMIN인지 확인 하는 기능
     public boolean userHasAdminRole(String token) {
         String userPk = getUserPk(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(userPk);
         // 사용자의 권한 중에 "ADMIN"이 있는지 확인합니다.
         return userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ADMIN"));
+    }
+
+    //권한이 USER인지 확인 하는 기능
+    public boolean userHasUserRole(String token) {
+        String userPk = getUserPk(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userPk);
+        // 사용자의 권한 중에 "USER"이 있는지 확인합니다.
+        return userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("USER"));
     }
 
 }
