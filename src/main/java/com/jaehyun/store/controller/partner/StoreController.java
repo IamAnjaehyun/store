@@ -1,8 +1,6 @@
 package com.jaehyun.store.controller.partner;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jaehyun.store.config.JwtTokenProvider;
 import com.jaehyun.store.model.domain.Store;
 import com.jaehyun.store.model.dto.StoreDto;
@@ -37,7 +35,7 @@ public class StoreController {
             Store store = new Store();
             store.setStoreName(storeDto.getStoreName());
             store.setStoreLocation(storeDto.getStoreLocation());
-
+            store.setStoreDescription(storeDto.getStoreDescription());
             // 사장의 전화번호를 토큰에서 추출하여 설정
             String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
             store.setUserPhoneNum(userPhoneNum);
