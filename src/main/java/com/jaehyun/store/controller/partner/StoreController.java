@@ -13,7 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/store")
@@ -43,10 +46,21 @@ public class StoreController {
         }
     }
 
+
     @GetMapping("/view")
-    public String getAllStores() throws JsonProcessingException {
+    public List<Map<String, Object>> getAllStores() {
         List<Store> stores = storeRepository.findAll();
-        return objectMapper.writeValueAsString(stores);
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Store store : stores) {
+            Map<String, Object> storeInfo = new HashMap<>();
+            storeInfo.put("storeId", store.getStoreId());
+            storeInfo.put("storeName", store.getStoreName());
+            storeInfo.put("storeLocation", store.getStoreLocation());
+            result.add(storeInfo);
+        }
+
+        return result;
     }
 }
 
