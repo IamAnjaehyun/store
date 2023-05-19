@@ -28,8 +28,10 @@ public class JwtTokenProvider {
     @Value("{spring.jwt.secret}")
     private String secretKey;
 
-    public static final String TOKEN_HEADER = "Authorization";
+    public static final String TOKEN_HEADER = "Authorization"; //토큰헤더
     public static final String TOKEN_PREFIX = "Bearer "; //jwt토큰 사용하는 경우 Bearer + 한칸띄고 붙임
+
+    // 결론적으로 Authorization | Bearer +{___}
 
     // 토큰 유효시간 1시간
     private long tokenValidTime = 1000 * 60 * 60; //1시간(1000 * 60 * 60)
@@ -115,6 +117,4 @@ public class JwtTokenProvider {
         }
         return null;
     }
-
-
 }

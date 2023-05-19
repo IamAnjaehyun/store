@@ -20,18 +20,18 @@ public class PermitController {
     private final JwtTokenProvider jwtTokenProvider;
     private final ReservationRepository reservationRepository;
 
-    //파트너의 전화번호를 통해 예약 목록을 조회 (이거는 권한 없어도됨 => 사실 있어야 할 것 같긴 함)
+    //파트너의 전화번호를 통해 예약 목록을 조회 (이거는 권한 없어도됨 => 남들 예약시간 피해서 조회하려면 없어도될듯?)
     @GetMapping("/reservations/{userPhoneNum}")
-    public ResponseEntity<List<Reservation>> reservationListController(@PathVariable String userPhoneNum) {
+    public ResponseEntity<List<Reservation>> viewReservationList(@PathVariable String userPhoneNum) {
         List<Reservation> reservations = reservationRepository.findByUserPhoneNum(userPhoneNum);
         return ResponseEntity.ok(reservations);
     }
 
 
-    //예약이 들어왔을 때 승인, 혹은 거절
+    //들어온 예약에 대해 승인, 혹은 거절
     //http://localhost:8080/permit/status?reservationId=1&status=OKAY 형식 (토큰값 header에 줘야함)
     @PostMapping("/status")
-    public ResponseEntity<String> statusController(
+    public ResponseEntity<String> setStatus(
             @RequestParam("reservationId") Long reservationId,
             @RequestParam("status") ReservationStatus status,
             HttpServletRequest request) {

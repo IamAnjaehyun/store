@@ -40,5 +40,4 @@ public class UserController {
         }
         return jwtTokenProvider.createToken(member.getUserPhoneNum(), member.getRoles());
     }
-
 }

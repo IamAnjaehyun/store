@@ -22,6 +22,7 @@ public class ReservationController {
     private final JwtTokenProvider jwtTokenProvider;
 
 
+    //예약 생성
     @PostMapping("/createReservation")
     public ResponseEntity<String> createReservation(
             @RequestParam("storeId") Long storeId,

@@ -26,6 +26,7 @@ public class StoreController {
     private final JwtTokenProvider jwtTokenProvider;
 
 
+    //상점 등록
     @PostMapping("/register")
     public ResponseEntity<String> registerStore(@RequestBody StoreDto storeDto, HttpServletRequest request) {
         // 토큰을 해석하여 사용자 정보를 가져옵니다.
@@ -49,6 +50,7 @@ public class StoreController {
     }
 
 
+    //모든 매장 정보 확인
     @GetMapping("/view")
     public List<Map<String, Object>> getAllStores() {
         List<Store> stores = storeRepository.findAll();
