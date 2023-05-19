@@ -1,5 +1,6 @@
 package com.jaehyun.store.config;
 
+import com.jaehyun.store.model.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -102,5 +103,18 @@ public class JwtTokenProvider {
         // 사용자의 권한 중에 "USER"이 있는지 확인합니다.
         return userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("USER"));
     }
+
+    // 토큰에서 회원 정보 추출
+    public String getUserPhoneNum(String token) {
+        String userPk = getUserPk(token); // 토큰에서 userPk 추출
+        // userPk를 사용하여 userPhoneNum 찾기
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userPk);
+        if (userDetails instanceof User) {
+            User user = (User) userDetails;
+            return user.getUserPhoneNum(); // userPhoneNum 반환
+        }
+        return null;
+    }
+
 
 }

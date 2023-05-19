@@ -24,7 +24,6 @@ import java.util.Map;
 public class StoreController {
     private final StoreRepository storeRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final ObjectMapper objectMapper;
 
 
     @PostMapping("/register")
