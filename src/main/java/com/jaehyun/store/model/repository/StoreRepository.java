@@ -1,4 +1,7 @@
 package com.jaehyun.store.model.repository;
 
-public interface StoreRepository {
+import com.jaehyun.store.model.domain.Store;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface StoreRepository extends JpaRepository <Store, Long> {
 }
