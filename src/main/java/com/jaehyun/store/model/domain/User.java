@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,31 +47,31 @@ public class User extends BaseEntity implements UserDetails {
     }
     @Override
     public String getPassword() {
-        return null;
+        return userPassword; // 비밀번호
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return userPhoneNum; // 휴대폰 번호
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true; // 계정 만료 여부
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true; // 계정 잠금 여부
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true; // 자격 증명(비밀번호) 만료 여부
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true; // 계정 활성화 여부
     }
 }
