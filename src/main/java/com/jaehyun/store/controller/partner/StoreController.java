@@ -36,7 +36,11 @@ public class StoreController {
             Store store = new Store();
             store.setStoreName(storeDto.getStoreName());
             store.setStoreLocation(storeDto.getStoreLocation());
-            store.setStoreDescription(storeDto.getStoreDescription());
+
+            // 사장의 전화번호를 토큰에서 추출하여 설정
+            String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
+            store.setUserPhoneNum(userPhoneNum);
+
             storeRepository.save(store);
             return ResponseEntity.ok("Store registered successfully.");
         } else {

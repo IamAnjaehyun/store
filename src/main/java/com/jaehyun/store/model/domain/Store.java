@@ -16,6 +16,7 @@ public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeId;//매장 번호
+    private String userPhoneNum; //사장인지 확인하기 위한 사장 핸드폰번호(여기선 ID로 쓰임)
 
     private String storeName; //매장 이름
     private String storeLocation; //매장 위치
