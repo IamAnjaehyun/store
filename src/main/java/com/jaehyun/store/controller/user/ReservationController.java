@@ -4,7 +4,6 @@ import com.jaehyun.store.config.JwtTokenProvider;
 import com.jaehyun.store.model.domain.Reservation;
 import com.jaehyun.store.model.repository.ReservationRepository;
 import com.jaehyun.store.model.type.EarlyCheck;
-import com.jaehyun.store.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;

@@ -35,3 +35,14 @@
 예약 승인, 거절 후 예약 정보 확인
 
 ![Image](https://github.com/IamAnjaehyun/fastcampus-project-board/assets/101981639/4640c8bb-c048-4243-9bbc-a24ee01c1df4)
+
+![Image](https://github.com/IamAnjaehyun/fastcampus-project-board/assets/101981639/f3eceaef-9993-4673-b437-72f21c126a36)
+
+휴대폰 번호 입력을 통해 10분전 매장도착 확인
+
+![Image](https://github.com/IamAnjaehyun/fastcampus-project-board/assets/101981639/5976b8bb-4420-444b-937d-1bfe5eb77ce1)
+
+
+상점 이용 후 리뷰 작성
+
+![Image](https://github.com/IamAnjaehyun/fastcampus-project-board/assets/101981639/cc4b5ef6-ce0c-41b2-a31f-dcfefeebe939)
