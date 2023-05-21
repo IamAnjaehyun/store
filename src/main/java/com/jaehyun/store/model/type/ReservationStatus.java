@@ -1,5 +1,6 @@
 package com.jaehyun.store.model.type;
 
+//사장 승인이 있어야 예약완료가능
 public enum ReservationStatus {
     REFUSE,
     PLEASE_WAIT,
