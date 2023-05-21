@@ -10,10 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ReviewDto {
-    private Long reviewId; //리뷰 아이디
-
-    private Long userId; //유저 아이디
+    //유저 아이디는 토큰을 통해서 가져오면 됨. 생성시간은 알아서 생김. BaseEntity로인해
     private Long storeId;//상점 아이디
-    private LocalDateTime createdAt; //리뷰 작성일자
     private String reviewText; //리뷰 텍스트
 }
