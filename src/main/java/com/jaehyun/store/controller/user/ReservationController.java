@@ -3,14 +3,16 @@ package com.jaehyun.store.controller.user;
 import com.jaehyun.store.config.JwtTokenProvider;
 import com.jaehyun.store.model.domain.Reservation;
 import com.jaehyun.store.model.repository.ReservationRepository;
+import com.jaehyun.store.model.type.EarlyCheck;
+import com.jaehyun.store.service.ReservationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/reservations")
@@ -20,7 +22,6 @@ public class ReservationController {
     private final ReservationRepository reservationRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
-
 
     //예약 생성
     @PostMapping("/createReservation")
@@ -44,5 +45,24 @@ public class ReservationController {
 
         return ResponseEntity.ok("Reservation created successfully");
     }
+
+    @GetMapping("/check")
+    public ResponseEntity<String> checkReservation(@RequestParam("userPhoneNum") String userPhoneNum) {
+        if (userPhoneNum != null && !userPhoneNum.isEmpty()) {
+            LocalDateTime now = LocalDateTime.now();
+
+            List<Reservation> reservations = reservationRepository.findByUserPhoneNumAndReservationTimeBefore(userPhoneNum, now);
+
+            for (Reservation reservation : reservations) {
+                reservation.setComeCheck(EarlyCheck.COME);
+                reservationRepository.save(reservation);
+            }
+
+            return ResponseEntity.ok("Reservations checked successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Missing 'userPhoneNum' parameter.");
+        }
+    }
+
 
 }
