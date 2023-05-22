@@ -1,4 +1,3 @@
-// PermitController.java
 package com.jaehyun.store.controller.partner;
 
 import com.jaehyun.store.model.domain.Reservation;
