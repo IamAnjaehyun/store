@@ -1,9 +1,9 @@
+// PermitController.java
 package com.jaehyun.store.controller.partner;
 
-import com.jaehyun.store.config.JwtTokenProvider;
 import com.jaehyun.store.model.domain.Reservation;
-import com.jaehyun.store.model.repository.ReservationRepository;
 import com.jaehyun.store.model.type.ReservationStatus;
+import com.jaehyun.store.service.PermitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,51 +11,37 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/permit")
 @RequiredArgsConstructor
 public class PermitController {
-    private final JwtTokenProvider jwtTokenProvider;
-    private final ReservationRepository reservationRepository;
 
-    //파트너의 전화번호를 통해 예약 목록을 조회 (이거는 권한 없어도됨 => 남들 예약시간 피해서 조회하려면 없어도될듯?)
+    private final PermitService permitService;
+
+    // 파트너의 전화번호를 통해 예약 목록을 조회
     @GetMapping("/reservations/{userPhoneNum}")
     public ResponseEntity<List<Reservation>> viewReservationList(@PathVariable String userPhoneNum) {
-        List<Reservation> reservations = reservationRepository.findByUserPhoneNum(userPhoneNum);
+        List<Reservation> reservations = permitService.getReservationsByUserPhoneNum(userPhoneNum);
         return ResponseEntity.ok(reservations);
     }
 
-
-    //들어온 예약에 대해 승인, 혹은 거절
-    //http://localhost:8080/permit/status?reservationId=1&status=OKAY 형식 (토큰값 header에 줘야함)
+    // 들어온 예약에 대해 승인 또는 거절
     @PostMapping("/status")
     public ResponseEntity<String> setStatus(
             @RequestParam("reservationId") Long reservationId,
             @RequestParam("status") ReservationStatus status,
             HttpServletRequest request) {
 
-        // 토큰에서 사장의 전화번호 추출
-        String token = jwtTokenProvider.resolveToken(request);
-        String phoneNum = jwtTokenProvider.getUserPhoneNum(token);
+        // 토큰에서 파트너의 전화번호 추출
+        String phoneNum = permitService.extractUserPhoneNumFromToken(request);
 
-        // 예약 조회
-        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
-        if (optionalReservation.isPresent()) {
-            Reservation reservation = optionalReservation.get();
-
-            // 예약한 사장의 전화번호와 토큰에서 추출한 전화번호가 일치하는지 확인
-            if (reservation.getUserPhoneNum().equals(phoneNum)) {
-                // 상태 변경
-                reservation.setStatus(status);
-                reservationRepository.save(reservation);
-                return ResponseEntity.ok("Reservation status updated successfully.");
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to update the reservation status.");
-            }
+        // 예약 상태 업데이트
+        boolean updated = permitService.updateReservationStatus(reservationId, phoneNum, status);
+        if (updated) {
+            return ResponseEntity.ok("Reservation status updated successfully.");
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to update the reservation status.");
         }
     }
 }
