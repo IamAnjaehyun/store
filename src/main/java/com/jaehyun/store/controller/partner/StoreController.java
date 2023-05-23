@@ -19,7 +19,8 @@ public class StoreController {
     // 상점 등록
     @PostMapping("/register")
     public ResponseEntity<String> registerStore(@RequestBody StoreDto storeDto, HttpServletRequest request) {
-        return storeService.registerStore(storeDto, request);
+        storeService.registerStore(storeDto, request);
+        return ResponseEntity.ok("registerStore successfully.");
     }
 
     // 모든 매장 정보 확인

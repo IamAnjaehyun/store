@@ -22,12 +22,14 @@ public class ReservationController {
             @RequestParam("storeId") Long storeId,
             @RequestParam("reservationTime") @DateTimeFormat(pattern = "yy-MM-dd'T'HH:mm") LocalDateTime reservationTime,
             HttpServletRequest request) {
-        return reservationService.createReservation(storeId, reservationTime, request);
+        reservationService.createReservation(storeId, reservationTime, request);
+        return ResponseEntity.ok("createReservation successfully.");
     }
 
     // 예약 체크
     @GetMapping("/check")
     public ResponseEntity<String> checkReservation(@RequestParam("userPhoneNum") String userPhoneNum) {
-        return reservationService.checkReservation(userPhoneNum);
+        reservationService.checkReservation(userPhoneNum);
+        return ResponseEntity.ok("checkReservation successfully.");
     }
 }
