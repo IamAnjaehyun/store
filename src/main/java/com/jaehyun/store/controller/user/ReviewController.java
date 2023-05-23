@@ -1,4 +1,3 @@
-// ReviewController.java
 package com.jaehyun.store.controller.user;
 
 import com.jaehyun.store.model.dto.ReviewDto;

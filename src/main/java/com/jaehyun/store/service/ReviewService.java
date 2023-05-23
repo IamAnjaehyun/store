@@ -1,4 +1,3 @@
-// ReviewService.java
 package com.jaehyun.store.service;
 
 import com.jaehyun.store.config.JwtTokenProvider;
