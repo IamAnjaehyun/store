@@ -20,4 +20,9 @@ public class ReviewController {
     public ResponseEntity<String> writeReview(@RequestBody ReviewDto reviewDto, HttpServletRequest request) {
         return reviewService.writeReview(reviewDto, request);
     }
+
+//    @PostMapping("/delete")
+//    public ResponseEntity<String> deleteReview(@RequestBody ReviewDto reviewDto, HttpServletRequest request) {
+//        return reviewService.writeReview(reviewDto, request);
+//    }
 }
