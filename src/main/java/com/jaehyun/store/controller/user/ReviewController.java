@@ -2,12 +2,14 @@ package com.jaehyun.store.controller.user;
 
 import com.jaehyun.store.model.dto.ReviewDto;
 import com.jaehyun.store.service.ReviewService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Api(tags = "리뷰 컨트롤러")
 @RestController
 @RequestMapping("/review")
 @RequiredArgsConstructor

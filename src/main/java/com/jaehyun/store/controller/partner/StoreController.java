@@ -2,6 +2,7 @@ package com.jaehyun.store.controller.partner;
 
 import com.jaehyun.store.model.dto.StoreDto;
 import com.jaehyun.store.service.StoreService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+@Api(tags = "상점 컨트롤러")
 @RestController
 @RequestMapping("/store")
 @RequiredArgsConstructor

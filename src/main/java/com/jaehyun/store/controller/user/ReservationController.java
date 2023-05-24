@@ -1,6 +1,7 @@
 package com.jaehyun.store.controller.user;
 
 import com.jaehyun.store.service.ReservationService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
+@Api(tags = "예약 컨트롤러")
 @RestController
 @RequestMapping("/reservations")
 @RequiredArgsConstructor

@@ -3,6 +3,7 @@ package com.jaehyun.store.controller.partner;
 import com.jaehyun.store.model.domain.Reservation;
 import com.jaehyun.store.model.type.ReservationStatus;
 import com.jaehyun.store.service.PermitService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Api(tags = "권한 승인 컨트롤러")
 @RestController
 @RequestMapping("/permit")
 @RequiredArgsConstructor
