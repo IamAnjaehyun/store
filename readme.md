@@ -74,3 +74,7 @@
 상점 이용 후 리뷰 작성
 
 ![Image](https://github.com/IamAnjaehyun/fastcampus-project-board/assets/101981639/cc4b5ef6-ce0c-41b2-a31f-dcfefeebe939)
+
+✅ ERD
+
+![Image](https://github.com/casealot/casealot-backend/assets/101981639/8aa07234-8e2e-4549-bbc9-55787e29621f)

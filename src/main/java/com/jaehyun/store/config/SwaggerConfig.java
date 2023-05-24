@@ -26,8 +26,8 @@ public class SwaggerConfig {
 
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("SpringBoot Practice Rest API Documentation")
-                .description("springboot rest api practice.")
+                .title("Store API")
+                .description("https://github.com/IamAnjaehyun/store.git")
                 .version("0.1")
                 .build();
     }
