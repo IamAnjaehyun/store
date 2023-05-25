@@ -43,7 +43,7 @@ public class StoreService {
         }
     }
 
-    //상점 삭
+    //상점 삭제
     public boolean deleteStore(Long storeId, HttpServletRequest request) {
         // 토큰을 통해 사용자 정보를 가져옴
         String token = jwtTokenProvider.resolveToken(request);
@@ -59,7 +59,26 @@ public class StoreService {
         }
     }
 
-    //상점 삭제
+    //상점 수정
+    public boolean updateStore(Long storeId, StoreDto storeDto, HttpServletRequest request) {
+        // 토큰을 통해 사용자 정보를 가져옴
+        String token = jwtTokenProvider.resolveToken(request);
+        String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
+        Store store = storeRepository.findById(storeId).orElse(null);
+        String storeUserPhoneNum = store.getUserPhoneNum();
+        // 권한이 ADMIN인지 확인(=PARTNER 등록이 되어있는지) && userPhoneNum 과 storeUserPhoneNum이 같은지
+        if (jwtTokenProvider.userHasAdminRole(token) && userPhoneNum.equals(storeUserPhoneNum)) { // 권한이 있어야 store 수정 가능
+            store.setStoreName(storeDto.getStoreName());
+            store.setStoreDescription(storeDto.getStoreDescription());
+            store.setStoreLocation(storeDto.getStoreLocation());
+            storeRepository.save(store);
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    //상점 이름으로 조회
     public List<Store> viewStore(String storeName) {
         return storeRepository.findByStoreName(storeName);
     }
