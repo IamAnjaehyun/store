@@ -23,4 +23,10 @@ public class ReviewController {
     public ResponseEntity<String> writeReview(@RequestBody ReviewDto reviewDto, HttpServletRequest request) {
         return reviewService.writeReview(reviewDto, request);
     }
+
+    @ApiOperation(value = "리뷰 삭제",notes = "손님이 자신이 이용한 상점에 대해 리뷰를 삭제할 수 있게 합니다.")
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<String> deleteReview(@PathVariable Long reviewId, HttpServletRequest request) {
+        return reviewService.deleteReview(reviewId, request);
+    }
 }

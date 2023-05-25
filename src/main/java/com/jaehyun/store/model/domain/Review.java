@@ -1,6 +1,7 @@
 package com.jaehyun.store.model.domain;
 
 import com.jaehyun.store.model.BaseEntity;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -11,12 +12,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Setter
+@Getter
 public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId; //리뷰 아이디
 
-    private String userId; //유저 아이디
+    private String userPhoneNum; //유저 아이디
     private Long storeId;//상점 아이디
     private String reviewText; //리뷰 텍스트
 }
