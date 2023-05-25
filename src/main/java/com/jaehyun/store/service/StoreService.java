@@ -43,6 +43,28 @@ public class StoreService {
         }
     }
 
+    //상점 삭
+    public boolean deleteStore(Long storeId, HttpServletRequest request) {
+        // 토큰을 통해 사용자 정보를 가져옴
+        String token = jwtTokenProvider.resolveToken(request);
+        String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
+        Store store = storeRepository.findById(storeId).orElse(null);
+        String storeUserPhoneNum = store.getUserPhoneNum();
+        // 권한이 ADMIN인지 확인(=PARTNER 등록이 되어있는지) && userPhoneNum 과 storeUserPhoneNum이 같은지
+        if (jwtTokenProvider.userHasAdminRole(token) && userPhoneNum.equals(storeUserPhoneNum)) { // 권한이 있어야 store 삭제 가능
+            storeRepository.deleteById(storeId);
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    //상점 삭제
+    public List<Store> viewStore(String storeName) {
+        return storeRepository.findByStoreName(storeName);
+    }
+
+
     //상점 조회
     public List<Map<String, Object>> getAllStores() {
         List<Store> stores = storeRepository.findAll();
