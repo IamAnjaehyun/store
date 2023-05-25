@@ -21,11 +21,12 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
+    //상점 등록
     public ResponseEntity<String> registerStore(StoreDto storeDto, HttpServletRequest request) {
-        // 토큰을 해석하여 사용자 정보를 가져옵니다.
+        // 토큰을 통해 사용자 정보를 가져옴
         String token = jwtTokenProvider.resolveToken(request);
 
-        // 권한이 ADMIN인지 확인합니다.(=PARTNER 등록이 되어있는지)
+        // 권한이 ADMIN인지 확인(=PARTNER 등록이 되어있는지)
         if (jwtTokenProvider.userHasAdminRole(token)) { // 권한이 있어야 store 등록 가능
             Store store = new Store();
             store.setStoreName(storeDto.getStoreName());
@@ -42,6 +43,7 @@ public class StoreService {
         }
     }
 
+    //상점 조회
     public List<Map<String, Object>> getAllStores() {
         List<Store> stores = storeRepository.findAll();
         List<Map<String, Object>> result = new ArrayList<>();

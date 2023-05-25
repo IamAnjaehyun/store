@@ -19,6 +19,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
+    //회원가입
     public Long join(UserCreateDto userCreateDto) {
         User user = User.builder()
                 .userPhoneNum(userCreateDto.getUserPhoneNum())
@@ -28,6 +29,7 @@ public class UserService {
         return userRepository.save(user).getUserId();
     }
 
+    //회원 삭제
     public boolean deleteUser(String userPhoneNum, String password) {
         Optional<User> optionalUser = userRepository.findByUserPhoneNum(userPhoneNum);
         if (optionalUser.isPresent()) {
@@ -40,6 +42,7 @@ public class UserService {
         return false;
     }
 
+    //로그인
     public String login(UserCreateDto userCreateDto) {
         User user = userRepository.findByUserPhoneNum(userCreateDto.getUserPhoneNum())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 userPhoneNum 입니다."));

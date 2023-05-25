@@ -22,6 +22,7 @@ public class ReviewService {
     private final JwtTokenProvider jwtTokenProvider;
     private final ReviewRepository reviewRepository;
 
+    //리뷰 작성
     public ResponseEntity<String> writeReview(ReviewDto reviewDto, HttpServletRequest request) {
         // 1. 토큰을 통한 인증 및 고객 아이디 가져오기
         String token = jwtTokenProvider.resolveToken(request);
@@ -50,7 +51,7 @@ public class ReviewService {
         return ResponseEntity.ok("Review created successfully.");
     }
 
-
+    //리뷰 삭제
     public ResponseEntity<String> deleteReview(Long reviewId, HttpServletRequest request) {
         String token = jwtTokenProvider.resolveToken(request);
         String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);

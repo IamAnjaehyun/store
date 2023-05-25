@@ -12,6 +12,7 @@ import java.util.Collections;
 public class PartnerService {
     private final UserRepository userRepository;
 
+    //권한 변경
     public void changeRole(String userPhoneNum) {
         User member = userRepository.findByUserPhoneNum(userPhoneNum)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));

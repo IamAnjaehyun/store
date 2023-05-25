@@ -19,8 +19,9 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
+    //예약 생성
     public ResponseEntity<String> createReservation(Long storeId, LocalDateTime reservationTime, HttpServletRequest request) {
-        // 토큰에서 사용자 정보를 추출하여 회원의 전화번호 가져오기
+        // 토큰으로 phoneNum 가져오기
         String token = jwtTokenProvider.resolveToken(request);
         String phoneNum = jwtTokenProvider.getUserPhoneNum(token);
 
@@ -36,6 +37,7 @@ public class ReservationService {
         return ResponseEntity.ok("Reservation created successfully");
     }
 
+    //10분전에 와서 확인
     public ResponseEntity<String> checkReservation(String userPhoneNum) {
         if (userPhoneNum != null && !userPhoneNum.isEmpty()) {
             LocalDateTime now = LocalDateTime.now();
