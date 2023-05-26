@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
     //yml 파일에서 가져온 key
@@ -92,18 +94,23 @@ public class JwtTokenProvider {
 
     //권한이 ADMIN인지 확인 하는 기능
     public boolean userHasAdminRole(String token) {
-        String userPk = getUserPk(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userPk);
-        // 사용자의 권한 중에 "ADMIN"이 있는지 확인합니다.
-        return userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ADMIN"));
+        if (token != null && userDetailsService.loadUserByUsername(getUserPk(token)).getAuthorities().equals("ADMIN")) {
+            log.info("ADMIN's access");
+            return true;
+        }
+        log.info("USER access ADMIN's Method");
+        return false;
     }
 
     //권한이 USER인지 확인 하는 기능
     public boolean userHasUserRole(String token) {
-        String userPk = getUserPk(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userPk);
-        // 사용자의 권한 중에 "USER"이 있는지 확인합니다.
-        return userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("USER"));
+        if (token != null && validateToken(token)) {
+            String userPk = getUserPk(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userPk);
+            return userDetails.getAuthorities().stream()
+                    .anyMatch(auth -> auth.getAuthority().equals("USER"));
+        }
+        return false;
     }
 
     // 토큰에서 회원 정보 추출
