@@ -6,6 +6,7 @@ import com.jaehyun.store.service.StoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,13 @@ public class StoreController {
     @ApiOperation(value = "상점 등록", notes = "파트너 권한을 가진 유저가 상점을 등록합니다.")
     @PostMapping("/register")
     public ResponseEntity<String> registerStore(@RequestBody StoreDto storeDto, HttpServletRequest request) {
-        storeService.registerStore(storeDto, request);
-        return ResponseEntity.ok("registerStore successfully.");
+        boolean success = storeService.registerStore(storeDto, request);
+
+        if (success) {
+            return ResponseEntity.ok("Store registered successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only ADMIN users can register a store.");
+        }
     }
 
     //상점 삭제

@@ -5,6 +5,7 @@ import com.jaehyun.store.model.domain.Store;
 import com.jaehyun.store.model.dto.StoreDto;
 import com.jaehyun.store.model.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,31 +18,34 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StoreService {
     private final StoreRepository storeRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserService userService;
 
     //상점 등록
-    public ResponseEntity<String> registerStore(StoreDto storeDto, HttpServletRequest request) {
+    public boolean registerStore(StoreDto storeDto, HttpServletRequest request) {
         // 토큰을 통해 사용자 정보를 가져옴
         String token = jwtTokenProvider.resolveToken(request);
 
-        // 권한이 ADMIN인지 확인(=PARTNER 등록이 되어있는지)
+        // 토큰에서 전화번호 추출
+        String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
+
         if (jwtTokenProvider.userHasAdminRole(token)) { // 권한이 있어야 store 등록 가능
             Store store = new Store();
             store.setStoreName(storeDto.getStoreName());
             store.setStoreLocation(storeDto.getStoreLocation());
             store.setStoreDescription(storeDto.getStoreDescription());
-            // 사장의 전화번호를 토큰에서 추출하여 설정
-            String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
             store.setUserPhoneNum(userPhoneNum);
 
             storeRepository.save(store);
-            return ResponseEntity.ok("Store registered successfully.");
+            return true;
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only ADMIN users can register a store.");
+            return false;
         }
     }
+
 
     //상점 삭제
     public boolean deleteStore(Long storeId, HttpServletRequest request) {
