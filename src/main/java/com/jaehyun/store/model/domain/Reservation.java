@@ -19,6 +19,7 @@ public class Reservation extends BaseEntity {
 
     private String userPhoneNum; //예약요청한 회원의 id(=phoneNum)
     private Long storeId; //상점 id
+    private String storeName; //상점 이름
     private LocalDateTime reservationTime; //예약 날짜 및 시간
 
     @Enumerated(EnumType.STRING)

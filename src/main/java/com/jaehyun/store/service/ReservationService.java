@@ -20,7 +20,7 @@ public class ReservationService {
     private final JwtTokenProvider jwtTokenProvider;
 
     //예약 생성
-    public ResponseEntity<String> createReservation(Long storeId, LocalDateTime reservationTime, HttpServletRequest request) {
+    public ResponseEntity<String> createReservation(String storeName, LocalDateTime reservationTime, HttpServletRequest request) {
         // 토큰으로 phoneNum 가져오기
         String token = jwtTokenProvider.resolveToken(request);
         String phoneNum = jwtTokenProvider.getUserPhoneNum(token);
@@ -28,7 +28,7 @@ public class ReservationService {
         // 예약 생성을 위해 필요한 값들을 사용하여 Reservation 엔티티를 생성
         Reservation reservation = new Reservation();
         reservation.setUserPhoneNum(phoneNum);
-        reservation.setStoreId(storeId);
+        reservation.setStoreName(storeName);
         reservation.setReservationTime(reservationTime);
 
         // 예약 데이터를 데이터베이스에 저장

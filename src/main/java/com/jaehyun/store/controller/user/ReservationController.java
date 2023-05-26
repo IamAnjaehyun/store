@@ -21,12 +21,12 @@ public class ReservationController {
 
     // 예약 생성
     @ApiOperation(value = "예약 생성", notes = "상점 아이디와 예약 시간을 설정하여 예약을 생성합니다.")
-    @PostMapping("/create")
+    @PostMapping("/create/{storeName}")
     public ResponseEntity<String> createReservation(
-            @RequestParam("storeId") Long storeId,
+            @RequestParam("storeName") String storeName,
             @RequestParam("reservationTime") @DateTimeFormat(pattern = "yy-MM-dd'T'HH:mm") LocalDateTime reservationTime,
             HttpServletRequest request) {
-        reservationService.createReservation(storeId, reservationTime, request);
+        reservationService.createReservation(storeName, reservationTime, request);
         return ResponseEntity.ok("createReservation successfully.");
     }
 

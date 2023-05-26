@@ -1,6 +1,7 @@
 package com.jaehyun.store.model.repository;
 
 import com.jaehyun.store.model.domain.Reservation;
+import com.jaehyun.store.model.domain.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
