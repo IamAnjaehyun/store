@@ -37,11 +37,11 @@ public class PermitController {
             @RequestParam("status") ReservationStatus status,
             HttpServletRequest request) {
 
-        // 토큰에서 파트너의 전화번호 추출
-        String phoneNum = permitService.extractUserPhoneNumFromToken(request);
+        // 토큰에서 전화번호 추출
+//        String phoneNum = permitService.extractUserPhoneNumFromToken(request);
 
         // 예약 상태 업데이트
-        boolean updated = permitService.updateReservationStatus(reservationId, phoneNum, status);
+        boolean updated = permitService.updateReservationStatus(reservationId, request, status);
         if (updated) {
             return ResponseEntity.ok("Reservation status updated successfully.");
         } else {
