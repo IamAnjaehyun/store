@@ -21,7 +21,7 @@ public class ReservationController {
 
     // 예약 생성
     @ApiOperation(value = "예약 생성", notes = "상점 아이디와 예약 시간을 설정하여 예약을 생성합니다.")
-    @PostMapping("/createReservation")
+    @PostMapping("/create")
     public ResponseEntity<String> createReservation(
             @RequestParam("storeId") Long storeId,
             @RequestParam("reservationTime") @DateTimeFormat(pattern = "yy-MM-dd'T'HH:mm") LocalDateTime reservationTime,
@@ -30,8 +30,18 @@ public class ReservationController {
         return ResponseEntity.ok("createReservation successfully.");
     }
 
+    // 예약 취소
+    @ApiOperation(value = "예약 취소", notes = "토큰 속 고객의 휴대폰 번호와 상점 이름을 통해 예약 취소 요청을 합니다.")
+    @PostMapping("/cancel/{userPhoneNum}/{storeName}")
+    public ResponseEntity<String> cancelReservation(
+            @RequestParam("storeName") Long storeName,
+            HttpServletRequest request) {
+        reservationService.cancelReservation(String.valueOf(storeName), request);
+        return ResponseEntity.ok("cancelReservation successfully.");
+    }
+
     // 예약 체크
-    @ApiOperation(value = "10분전 예약 확인",notes = "예약시간 10분전에 키오스크를 통해 가게에 도착했다는 인증을 합니다.")
+    @ApiOperation(value = "10분전 예약 확인", notes = "예약시간 10분전에 키오스크를 통해 가게에 도착했다는 인증을 합니다.")
     @GetMapping("/check")
     public ResponseEntity<String> checkReservation(@RequestParam("userPhoneNum") String userPhoneNum) {
         reservationService.checkReservation(userPhoneNum);

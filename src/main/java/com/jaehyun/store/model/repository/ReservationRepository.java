@@ -12,5 +12,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     //폰번호로 예약시간 조회
     List<Reservation> findByUserPhoneNumAndReservationTimeBefore(String userPhoneNum, LocalDateTime reservationTime);
 
+    Reservation deleteByUserPhoneNumAndStoreName(String userPhoneNum, String storeName);
+
     Reservation findByUserPhoneNumAndStoreId(String userPhoneNum, Long storeId);
 }
