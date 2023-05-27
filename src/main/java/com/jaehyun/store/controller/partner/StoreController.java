@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Api(tags = "상점 컨트롤러")
 @RestController
-@RequestMapping("/store")
+@RequestMapping("/shop/v1/store")
 @RequiredArgsConstructor
 public class StoreController {
     private final StoreService storeService;

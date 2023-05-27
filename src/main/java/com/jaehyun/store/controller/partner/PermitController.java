@@ -15,7 +15,7 @@ import java.util.List;
 
 @Api(tags = "권한 승인 컨트롤러")
 @RestController
-@RequestMapping("/permit")
+@RequestMapping("/shop/v1/permit")
 @RequiredArgsConstructor
 public class PermitController {
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "파트너 등록 컨트롤러")
 @RestController
-@RequestMapping("/partner")
+@RequestMapping("/shop/v1/partner")
 @RequiredArgsConstructor
 public class PartnerController {
     private final PartnerService partnerService;

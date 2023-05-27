@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Api(tags = "예약 컨트롤러")
 @RestController
-@RequestMapping("/reservations")
+@RequestMapping("/shop/v1/reservations")
 @RequiredArgsConstructor
 public class ReservationController {
 

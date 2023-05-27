@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "회원 컨트롤러")
 @RestController
+@RequestMapping("/shop/v1/user")
 @RequiredArgsConstructor
 public class UserController {
 

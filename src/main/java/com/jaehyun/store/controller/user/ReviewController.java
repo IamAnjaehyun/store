@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Api(tags = "리뷰 컨트롤러")
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/shop/v1/review")
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
