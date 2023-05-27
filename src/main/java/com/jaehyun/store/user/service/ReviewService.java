@@ -1,9 +1,11 @@
 package com.jaehyun.store.user.service;
 
 import com.jaehyun.store.global.config.JwtTokenProvider;
+import com.jaehyun.store.partner.domain.entity.Store;
+import com.jaehyun.store.partner.domain.repository.StoreRepository;
+import com.jaehyun.store.user.domain.dto.ReviewDto;
 import com.jaehyun.store.user.domain.entity.Reservation;
 import com.jaehyun.store.user.domain.entity.Review;
-import com.jaehyun.store.user.domain.dto.ReviewDto;
 import com.jaehyun.store.user.domain.repository.ReservationRepository;
 import com.jaehyun.store.user.domain.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -20,29 +23,38 @@ public class ReviewService {
     private final ReservationRepository reservationRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final ReviewRepository reviewRepository;
+    private final StoreRepository storeRepository;
 
     //리뷰 작성
     public ResponseEntity<String> writeReview(ReviewDto reviewDto, HttpServletRequest request) {
-        // 1. 토큰을 통한 인증 및 고객 아이디 가져오기
+        //토큰을 통한 인증 및 고객 아이디 가져오기
         String token = jwtTokenProvider.resolveToken(request);
         String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
 
-        // 2. 작성자 검증
-        Reservation reservation = reservationRepository.findByUserPhoneNumAndStoreId(userPhoneNum, reviewDto.getStoreId());
+        //상점 ID 조회
+        String storeName = reviewDto.getStoreName();
+        Store store = storeRepository.findIdByStoreName(storeName);
+        Long storeId = store.getStoreId();
+        if (storeId == null) {
+            return ResponseEntity.badRequest().body("Store not found.");
+        }
+
+        //작성자 검증
+        Reservation reservation = reservationRepository.findByUserPhoneNumAndStoreId(userPhoneNum, storeId);
         if (reservation == null) {
             return ResponseEntity.badRequest().body("You are not authorized to write a review for this store.");
         }
 
-        // 3. 예약 시간 확인
+        //예약 시간 확인
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime reservationTime = reservation.getReservationTime();
         if (currentTime.isBefore(reservationTime)) {
             return ResponseEntity.badRequest().body("You can only write a review after the reservation time has passed.");
         }
-
-        // 4. 리뷰 작성
+        //리뷰 작성
         Review review = new Review();
-        review.setStoreId(reviewDto.getStoreId());
+        review.setStoreId(storeId);
+        review.setStoreName(storeName);
         review.setUserPhoneNum(userPhoneNum);
         review.setReviewText(reviewDto.getReviewText());
         reviewRepository.save(review);
@@ -58,7 +70,7 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId).orElse(null);
 
         // 2. 작성자 핸드폰 번호와 토큰에서 조회한 핸드폰 번호 일치 여부 확인
-        if (!review.getUserPhoneNum().equals(userPhoneNum)) {
+        if (!Objects.requireNonNull(review).getUserPhoneNum().equals(userPhoneNum)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not authorized to delete this review.");
         }
 

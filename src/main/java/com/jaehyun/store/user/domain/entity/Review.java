@@ -19,5 +19,6 @@ public class Review extends BaseEntity {
 
     private String userPhoneNum; //유저 아이디
     private Long storeId;//상점 아이디
+    private String storeName;//상점 이름
     private String reviewText; //리뷰 텍스트
 }
