@@ -3,7 +3,7 @@ package com.jaehyun.store.user.service;
 import com.jaehyun.store.global.config.JwtTokenProvider;
 import com.jaehyun.store.user.domain.entity.Reservation;
 import com.jaehyun.store.user.domain.repository.ReservationRepository;
-import com.jaehyun.store.global.type.EarlyCheck;
+import com.jaehyun.store.type.EarlyCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

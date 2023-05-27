@@ -20,8 +20,8 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     // 예약 생성
-    @ApiOperation(value = "예약 생성", notes = "상점 아이디와 예약 시간을 설정하여 예약을 생성합니다.")
-    @PostMapping("/create/{storeName}")
+    @ApiOperation(value = "예약 생성", notes = "상점 이름과 예약 시간을 설정하여 예약을 생성합니다.")
+    @PostMapping("/create")
     public ResponseEntity<String> createReservation(
             @RequestParam("storeName") String storeName,
             @RequestParam("reservationTime") @DateTimeFormat(pattern = "yy-MM-dd'T'HH:mm") LocalDateTime reservationTime,

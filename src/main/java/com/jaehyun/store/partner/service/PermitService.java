@@ -2,11 +2,11 @@
 package com.jaehyun.store.partner.service;
 
 import com.jaehyun.store.global.config.JwtTokenProvider;
+import com.jaehyun.store.type.ReservationStatus;
 import com.jaehyun.store.user.domain.entity.Reservation;
 import com.jaehyun.store.partner.domain.entity.Store;
 import com.jaehyun.store.user.domain.repository.ReservationRepository;
 import com.jaehyun.store.partner.domain.repository.StoreRepository;
-import com.jaehyun.store.global.type.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

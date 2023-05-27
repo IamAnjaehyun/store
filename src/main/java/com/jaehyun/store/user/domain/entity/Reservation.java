@@ -1,8 +1,8 @@
 package com.jaehyun.store.user.domain.entity;
 
 import com.jaehyun.store.global.BaseEntity;
-import com.jaehyun.store.global.type.EarlyCheck;
-import com.jaehyun.store.global.type.ReservationStatus;
+import com.jaehyun.store.type.EarlyCheck;
+import com.jaehyun.store.type.ReservationStatus;
 import lombok.Getter;
 import lombok.Setter;
 

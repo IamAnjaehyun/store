@@ -1,8 +1,8 @@
 package com.jaehyun.store.partner.controller;
 
-import com.jaehyun.store.user.domain.entity.Reservation;
-import com.jaehyun.store.global.type.ReservationStatus;
+import com.jaehyun.store.type.ReservationStatus;
 import com.jaehyun.store.partner.service.PermitService;
+import com.jaehyun.store.user.domain.entity.Reservation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +36,6 @@ public class PermitController {
             @RequestParam("reservationId") Long reservationId,
             @RequestParam("status") ReservationStatus status,
             HttpServletRequest request) {
-
-        // 토큰에서 전화번호 추출
-//        String phoneNum = permitService.extractUserPhoneNumFromToken(request);
 
         // 예약 상태 업데이트
         boolean updated = permitService.updateReservationStatus(reservationId, request, status);

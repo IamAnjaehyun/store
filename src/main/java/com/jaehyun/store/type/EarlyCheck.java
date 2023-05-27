@@ -1,4 +1,4 @@
-package com.jaehyun.store.global.type;
+package com.jaehyun.store.type;
 
 //예약시간 전 체크 기능 구현위함
 public enum EarlyCheck {
