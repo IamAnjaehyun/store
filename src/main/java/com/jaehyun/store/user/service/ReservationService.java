@@ -1,6 +1,8 @@
 package com.jaehyun.store.user.service;
 
 import com.jaehyun.store.global.config.JwtTokenProvider;
+import com.jaehyun.store.partner.domain.entity.Store;
+import com.jaehyun.store.partner.domain.repository.StoreRepository;
 import com.jaehyun.store.user.domain.entity.Reservation;
 import com.jaehyun.store.user.domain.repository.ReservationRepository;
 import com.jaehyun.store.type.EarlyCheck;
@@ -18,6 +20,7 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final StoreRepository storeRepository;
 
     //예약 생성
     public ResponseEntity<String> createReservation(String storeName, LocalDateTime reservationTime, HttpServletRequest request) {
@@ -25,10 +28,15 @@ public class ReservationService {
         String token = jwtTokenProvider.resolveToken(request);
         String phoneNum = jwtTokenProvider.getUserPhoneNum(token);
 
+        // 상점 이름으로 storeId 조회
+        Store store = storeRepository.findIdByStoreName(storeName);
+        Long storeId = store.getStoreId();
+
         // 예약 생성을 위해 필요한 값들을 사용하여 Reservation 엔티티를 생성
         Reservation reservation = new Reservation();
         reservation.setUserPhoneNum(phoneNum);
         reservation.setStoreName(storeName);
+        reservation.setStoreId(storeId);
         reservation.setReservationTime(reservationTime);
 
         // 예약 데이터를 데이터베이스에 저장

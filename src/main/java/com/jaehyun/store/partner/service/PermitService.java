@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +24,17 @@ public class PermitService {
     private final StoreRepository storeRepository;
 
     // 파트너의 전화번호를 통해 예약 목록을 조회
-    public List<Reservation> getReservationsByUserPhoneNum(String userPhoneNum) {
-        return reservationRepository.findByUserPhoneNum(userPhoneNum);
+    public List<Reservation> getReservationsByPartnerPhoneNum(String partnerPhoneNum) {
+        // 상점 주인의 userPhoneNum을 통해 상점들을 조회
+        List<Store> stores = storeRepository.findByUserPhoneNum(partnerPhoneNum);
+
+        // 상점들의 storeId 목록을 추출
+        List<Long> storeIds = stores.stream()
+                .map(Store::getStoreId)
+                .collect(Collectors.toList());
+
+        // 상점들의 storeId 목록을 통해 예약 목록을 조회
+        return reservationRepository.findByStoreIdIn(storeIds);
     }
 
     // 토큰에서 전화번호 추출
