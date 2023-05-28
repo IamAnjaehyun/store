@@ -39,6 +39,7 @@ public class StoreService {
             store.setUserPhoneNum(userPhoneNum);
             store.setDistance(storeDto.getDistance());
             store.setAverageRating(0.0);
+            store.setTotalReviewCount(0);
             storeRepository.save(store);
             return true;
         } else {
@@ -77,6 +78,9 @@ public class StoreService {
             store.setStoreLocation(storeDto.getStoreLocation());
             store.setDistance(storeDto.getDistance());
             store.setAverageRating(store.getAverageRating());
+            store.setTotalReviewCount(0);
+            store.setTotalRating(0L);
+            store.setTotalRating(0L);
             storeRepository.save(store);
             return true;
         }else {

@@ -2,10 +2,12 @@ package com.jaehyun.store.partner.controller;
 
 import com.jaehyun.store.partner.domain.entity.Store;
 import com.jaehyun.store.partner.domain.dto.StoreDto;
+import com.jaehyun.store.partner.domain.repository.StoreRepository;
 import com.jaehyun.store.partner.service.StoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class StoreController {
     private final StoreService storeService;
+    private final StoreRepository storeRepository;
 
     // 상점 등록
     @ApiOperation(value = "상점 등록", notes = "파트너 권한을 가진 유저가 상점을 등록합니다.")
@@ -62,5 +65,26 @@ public class StoreController {
     @GetMapping("/view")
     public List<Map<String, Object>> getAllStores() {
         return storeService.getAllStores();
+    }
+
+    @ApiOperation(value = "상점 가나다순 조회", notes = "모든 매장의 목록을 가나다순으로 확인합니다.")
+    @GetMapping("/view/name")
+    public ResponseEntity<List<Store>> getStoresByName() {
+        List<Store> stores = storeRepository.findAll(Sort.by(Sort.Direction.ASC, "storeName"));
+        return ResponseEntity.ok(stores);
+    }
+
+    @ApiOperation(value = "상점 별점순 조회", notes = "모든 매장의 목록을 별점순으로 확인합니다.")
+    @GetMapping("/view/rating")
+    public ResponseEntity<List<Store>> getStoresByRating() {
+        List<Store> stores = storeRepository.findAll(Sort.by(Sort.Direction.DESC, "averageRating"));
+        return ResponseEntity.ok(stores);
+    }
+
+    @ApiOperation(value = "상점 거리순 조회", notes = "모든 매장의 목록을 거리순으로 확인합니다.")
+    @GetMapping("/view/distance")
+    public ResponseEntity<List<Store>> getStoresByDistance() {
+        List<Store> stores = storeRepository.findAll(Sort.by(Sort.Direction.ASC, "distance"));
+        return ResponseEntity.ok(stores);
     }
 }
