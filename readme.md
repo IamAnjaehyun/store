@@ -1,4 +1,4 @@
-## Spring-boot Store
+## Spring-boot Store API
 
 ### ✅ 프로젝트 설명
 - 스프링부트를 이용하여 만든 Store API입니다.
@@ -10,6 +10,29 @@
 - 데이터 베이스 : MYSQL
 - 빌드 툴 : Gradle
 - 관리 툴 : GitHub
+
+## 🔌 Dependencies
+- Spring Data JPA
+- Mysql connector
+- h2
+- Spring Security
+- jwt
+- swagger
+- Lombok
+- Spring Web
+
+
+## 💻 기술 스택
+- 백엔드
+    - SpringBoot, Spring Data JPA
+- 데이터베이스
+    - MySQL, MySQL Workbench
+
+## 🛠 ERD
+
+![Image](https://github.com/casealot/casealot-backend/assets/101981639/a5a705cb-75db-4244-9e21-eae90fdc3d76)
+
+
 
 ✅ API요구사항 1
 - 공통 인증 구현
@@ -27,12 +50,11 @@
 
 👉 PostMan
 
-![Image](https://github.com/casealot/casealot-backend/assets/101981639/c65e7cdf-f34e-4790-855b-bd458386bb7e)
+![Image](https://github.com/casealot/casealot-backend/assets/101981639/ce9606cd-53f7-4c32-ba2c-fb5c1ab606b6)
 
 👉 Swagger
 
-![Image](https://github.com/casealot/casealot-backend/assets/101981639/24b4df33-978e-4175-a7ca-d260babfca9d)
-
+![Image](https://github.com/casealot/casealot-backend/assets/101981639/c8d03995-37be-4140-8e56-7d0e0bf5a57b)
 
 [//]: # (🍏 API 활용법 &#40;임시~!&#41;)
 
@@ -106,6 +128,10 @@
 [//]: # ()
 [//]: # (![Image]&#40;https://github.com/IamAnjaehyun/fastcampus-project-board/assets/101981639/cc4b5ef6-ce0c-41b2-a31f-dcfefeebe939&#41;)
 
-👉 ERD
+👉 느낀점
+- 강의를 통해 강사님께서 작성해주신대로만 토큰을 통해 여러가지 인증을 구현했던 것이 도움이 되었지만,</br>
+이번 강의를 통해 혼자 처음으로 토큰을 구현하고, 사용 해 본 프로젝트였기에 어려움이 많았다. 특히, </br>
+토큰을 파싱하여 권한을 확인하거나, 토큰 소유주의 정보를 가져와 이곳 저곳에 사용하는게 어려웠는데, </br>
+하루하루 검색을 통해 해결방법을 찾고 해결해 나가는 과정이 재미있었던 프로젝트였다.💪
 
-![Image](https://github.com/casealot/casealot-backend/assets/101981639/8aa07234-8e2e-4549-bbc9-55787e29621f)
+
