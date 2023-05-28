@@ -32,11 +32,11 @@ public class ReservationController {
 
     // 예약 취소
     @ApiOperation(value = "예약 취소", notes = "토큰 속 고객의 휴대폰 번호와 상점 이름을 통해 예약 취소 요청을 합니다.")
-    @PostMapping("/cancel/{userPhoneNum}/{storeName}")
+    @DeleteMapping("/cancel/{storeName}")
     public ResponseEntity<String> cancelReservation(
-            @RequestParam("storeName") Long storeName,
+            @PathVariable String storeName,
             HttpServletRequest request) {
-        reservationService.cancelReservation(String.valueOf(storeName), request);
+        reservationService.cancelReservation(storeName, request);
         return ResponseEntity.ok("cancelReservation successfully.");
     }
 

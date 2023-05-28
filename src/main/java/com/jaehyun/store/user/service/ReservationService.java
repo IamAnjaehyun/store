@@ -9,6 +9,7 @@ import com.jaehyun.store.type.EarlyCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -50,13 +51,15 @@ public class ReservationService {
         return ResponseEntity.ok("Reservation created successfully");
     }
 
-    public Reservation cancelReservation(String storeName,HttpServletRequest request) {
+    @Transactional
+    public void cancelReservation(String storeName, HttpServletRequest request) {
         // 토큰으로 phoneNum 가져오기
         String token = jwtTokenProvider.resolveToken(request);
         String phoneNum = jwtTokenProvider.getUserPhoneNum(token);
 
-        return reservationRepository.deleteByUserPhoneNumAndStoreName(phoneNum, storeName);
+        reservationRepository.deleteByUserPhoneNumAndStoreName(phoneNum, storeName);
     }
+
 
     //10분전에 와서 확인
     public ResponseEntity<String> checkReservation(String userPhoneNum) {
