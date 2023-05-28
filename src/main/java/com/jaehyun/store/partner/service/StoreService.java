@@ -82,7 +82,7 @@ public class StoreService {
     }
 
     //상점 이름으로 조회
-    public List<Store> viewStore(String storeName) {
+    public Store viewStore(String storeName) {
         return storeRepository.findByStoreName(storeName);
     }
 

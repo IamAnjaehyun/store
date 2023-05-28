@@ -52,8 +52,8 @@ public class StoreController {
     //상점 개별 조회
     @ApiOperation(value = "상점 조회", notes = "상점의 이름을 통해 상점을 조회합니다.")
     @GetMapping("/view/{storeName}")
-    public ResponseEntity<List<Store>> getStore(@PathVariable String storeName) {
-        List<Store> store = storeService.viewStore(storeName);
+    public ResponseEntity<Store> getStore(@PathVariable String storeName) {
+        Store store = storeService.viewStore(storeName);
         return ResponseEntity.ok(store);
     }
 
