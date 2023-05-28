@@ -3,6 +3,7 @@ package com.jaehyun.store.user.service;
 import com.jaehyun.store.global.config.JwtTokenProvider;
 import com.jaehyun.store.partner.domain.entity.Store;
 import com.jaehyun.store.partner.domain.repository.StoreRepository;
+import com.jaehyun.store.type.StarRating;
 import com.jaehyun.store.user.domain.dto.ReviewDto;
 import com.jaehyun.store.user.domain.entity.Reservation;
 import com.jaehyun.store.user.domain.entity.Review;
@@ -59,9 +60,27 @@ public class ReviewService {
         review.setStoreName(storeName);
         review.setUserPhoneNum(userPhoneNum);
         review.setReviewText(reviewDto.getReviewText());
+        review.setStarRating(reviewDto.getStarRating());
         reviewRepository.save(review);
 
+        // 상점의 별점도 업데이트
+        StarRating newAverageRating = calculateNewAverageRating(store.getAverageRating(), store.getReviewCount(), reviewDto.getStarRating());
+        int newReviewCount = store.getReviewCount() + 1;
+
+        store.setAverageRating(newAverageRating);
+        store.setReviewCount(newReviewCount);
+        storeRepository.save(store);
+
+
         return ResponseEntity.ok("Review created successfully.");
+    }
+    //별점 계산
+    private StarRating calculateNewAverageRating(StarRating currentRating, int reviewCount, StarRating newRating) {
+        int totalRating = currentRating.getValue() * reviewCount;
+        int newTotalRating = totalRating + newRating.getValue();
+        int newReviewCount = reviewCount + 1;
+
+        return StarRating.fromValue(newTotalRating / newReviewCount);
     }
 
     //리뷰 삭제
@@ -94,4 +113,5 @@ public class ReviewService {
         //리뷰 조회
         return reviewRepository.findByStoreId(store.getStoreId());
     }
+
 }

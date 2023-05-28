@@ -1,13 +1,11 @@
 package com.jaehyun.store.user.domain.entity;
 
 import com.jaehyun.store.global.BaseEntity;
+import com.jaehyun.store.type.StarRating;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Setter
@@ -21,4 +19,6 @@ public class Review extends BaseEntity {
     private Long storeId;//상점 아이디
     private String storeName;//상점 이름
     private String reviewText; //리뷰 텍스트
+    @Enumerated(EnumType.STRING)
+    private StarRating starRating; //별점
 }

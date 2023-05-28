@@ -29,7 +29,12 @@ public class ReservationService {
         String phoneNum = jwtTokenProvider.getUserPhoneNum(token);
 
         // 상점 이름으로 storeId 조회
-        Store store = storeRepository.findIdByStoreName(storeName);
+        Store store = storeRepository.findByStoreName(storeName);
+        if (store == null) {
+            // 상점이 존재하지 않을 경우 처리
+            return ResponseEntity.badRequest().body("Store not found.");
+        }
+
         Long storeId = store.getStoreId();
 
         // 예약 생성을 위해 필요한 값들을 사용하여 Reservation 엔티티를 생성
