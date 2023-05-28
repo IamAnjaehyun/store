@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -64,18 +66,32 @@ public class ReviewService {
 
     //리뷰 삭제
     public ResponseEntity<String> deleteReview(Long reviewId, HttpServletRequest request) {
+        //토큰에서 리뷰 작성자의 id 가져옴
         String token = jwtTokenProvider.resolveToken(request);
         String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
 
+        //id로 리뷰를 찾음
         Review review = reviewRepository.findById(reviewId).orElse(null);
 
-        // 2. 작성자 핸드폰 번호와 토큰에서 조회한 핸드폰 번호 일치 여부 확인
+        //작성자 핸드폰 번호와 토큰에서 조회한 핸드폰 번호 일치 여부 확인
         if (!Objects.requireNonNull(review).getUserPhoneNum().equals(userPhoneNum)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not authorized to delete this review.");
         }
 
-        // 3. 리뷰 삭제
+        //리뷰 삭제
         reviewRepository.delete(review);
         return ResponseEntity.ok("Review deleted successfully.");
+    }
+
+    //상점 이름으로 상점에 대한 모든 리뷰 조회
+    public List<Review> viewReview(String storeName) {
+        //상점 조회
+        Store store = storeRepository.findByStoreName(storeName);
+        if (store == null) {
+            // 상점이 존재하지 않을 경우 빈 리뷰 목록 반환
+            return Collections.emptyList();
+        }
+        //리뷰 조회
+        return reviewRepository.findByStoreId(store.getStoreId());
     }
 }

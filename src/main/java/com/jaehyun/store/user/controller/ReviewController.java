@@ -1,6 +1,7 @@
 package com.jaehyun.store.user.controller;
 
 import com.jaehyun.store.user.domain.dto.ReviewDto;
+import com.jaehyun.store.user.domain.entity.Review;
 import com.jaehyun.store.user.service.ReviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Api(tags = "리뷰 컨트롤러")
 @RestController
@@ -28,5 +30,11 @@ public class ReviewController {
     @DeleteMapping("/delete/{reviewId}")
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId, HttpServletRequest request) {
         return reviewService.deleteReview(reviewId, request);
+    }
+
+    @ApiOperation(value = "리뷰 조회", notes = "상점 이름을 입력하여, 해당 상점의 리뷰를 조회한다.")
+    @GetMapping("view/{storeName}")
+    public List<Review> viewReview(@PathVariable String storeName){
+        return reviewService.viewReview(storeName);
     }
 }
