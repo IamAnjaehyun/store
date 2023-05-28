@@ -1,7 +1,6 @@
 package com.jaehyun.store.user.domain.entity;
 
 import com.jaehyun.store.global.BaseEntity;
-import com.jaehyun.store.type.StarRating;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +18,5 @@ public class Review extends BaseEntity {
     private Long storeId;//상점 아이디
     private String storeName;//상점 이름
     private String reviewText; //리뷰 텍스트
-    @Enumerated(EnumType.STRING)
-    private StarRating starRating; //별점
+    private int starRating; //별점
 }

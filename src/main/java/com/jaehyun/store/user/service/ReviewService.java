@@ -3,9 +3,7 @@ package com.jaehyun.store.user.service;
 import com.jaehyun.store.global.config.JwtTokenProvider;
 import com.jaehyun.store.partner.domain.entity.Store;
 import com.jaehyun.store.partner.domain.repository.StoreRepository;
-import com.jaehyun.store.type.StarRating;
 import com.jaehyun.store.user.domain.dto.ReviewDto;
-import com.jaehyun.store.user.domain.entity.Reservation;
 import com.jaehyun.store.user.domain.entity.Review;
 import com.jaehyun.store.user.domain.repository.ReservationRepository;
 import com.jaehyun.store.user.domain.repository.ReviewRepository;
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -28,61 +25,51 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final StoreRepository storeRepository;
 
-    //리뷰 작성
     public ResponseEntity<String> writeReview(ReviewDto reviewDto, HttpServletRequest request) {
-        //토큰을 통한 인증 및 고객 아이디 가져오기
+        // 토큰으로부터 사용자 핸드폰 번호 가져오기
         String token = jwtTokenProvider.resolveToken(request);
         String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
 
-        //상점 ID 조회
+        // 상점 ID 조회
         String storeName = reviewDto.getStoreName();
-        Store store = storeRepository.findIdByStoreName(storeName);
-        Long storeId = store.getStoreId();
-        if (storeId == null) {
-            return ResponseEntity.badRequest().body("Store not found.");
+        Store store = storeRepository.findByStoreName(storeName);
+        if (store == null) {
+            return ResponseEntity.badRequest().body("can't find store.");
         }
 
-        //작성자 검증
-        Reservation reservation = reservationRepository.findByUserPhoneNumAndStoreId(userPhoneNum, storeId);
-        if (reservation == null) {
-            return ResponseEntity.badRequest().body("You are not authorized to write a review for this store.");
-        }
-
-        //예약 시간 확인
-        LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime reservationTime = reservation.getReservationTime();
-        if (currentTime.isBefore(reservationTime)) {
-            return ResponseEntity.badRequest().body("You can only write a review after the reservation time has passed.");
-        }
-        //리뷰 작성
+        // 새로운 리뷰 엔티티 생성
         Review review = new Review();
-        review.setStoreId(storeId);
-        review.setStoreName(storeName);
         review.setUserPhoneNum(userPhoneNum);
+        review.setStoreId(store.getStoreId());
+        review.setStoreName(store.getStoreName());
         review.setReviewText(reviewDto.getReviewText());
         review.setStarRating(reviewDto.getStarRating());
+
+        // 리뷰를 데이터베이스에 저장
         reviewRepository.save(review);
 
-        // 상점의 별점도 업데이트
-        StarRating newAverageRating = calculateNewAverageRating(store.getAverageRating(), store.getReviewCount(), reviewDto.getStarRating());
-        int newReviewCount = store.getReviewCount() + 1;
+        // 상점의 총 별점 총점과 리뷰 개수 업데이트
+        double newTotalRating = store.getTotalRating() + review.getStarRating();
+        int newTotalReviewCount = store.getTotalReviewCount() + 1;
 
+        // 평균 점수 계산
+        double newAverageRating = newTotalRating / newTotalReviewCount;
+
+        if (newAverageRating > 5.0) {
+            newAverageRating = 5.0; // 평균 점수가 5를 초과하지 않도록 제한
+        } else if (newAverageRating < 0.0) {
+            newAverageRating = 0.0; // 평균 점수가 0보다 작아지지 않도록 제한
+        }
+
+        // 상점 엔티티에 업데이트된 평균 점수와 리뷰 개수 설정
+        store.setTotalRating((long) newTotalRating);
+        store.setTotalReviewCount(newTotalReviewCount);
         store.setAverageRating(newAverageRating);
-        store.setReviewCount(newReviewCount);
+
         storeRepository.save(store);
 
-
-        return ResponseEntity.ok("Review created successfully.");
+        return ResponseEntity.ok("리뷰가 성공적으로 작성되었습니다.");
     }
-    //별점 계산
-    private StarRating calculateNewAverageRating(StarRating currentRating, int reviewCount, StarRating newRating) {
-        int totalRating = currentRating.getValue() * reviewCount;
-        int newTotalRating = totalRating + newRating.getValue();
-        int newReviewCount = reviewCount + 1;
-
-        return StarRating.fromValue(newTotalRating / newReviewCount);
-    }
-
     //리뷰 삭제
     public ResponseEntity<String> deleteReview(Long reviewId, HttpServletRequest request) {
         //토큰에서 리뷰 작성자의 id 가져옴

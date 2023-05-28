@@ -38,6 +38,7 @@ public class StoreService {
             store.setStoreDescription(storeDto.getStoreDescription());
             store.setUserPhoneNum(userPhoneNum);
             store.setDistance(storeDto.getDistance());
+            store.setAverageRating(0.0);
             storeRepository.save(store);
             return true;
         } else {
