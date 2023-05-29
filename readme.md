@@ -50,11 +50,14 @@
 
 👉 PostMan
 
-![Image](https://github.com/casealot/casealot-backend/assets/101981639/ce9606cd-53f7-4c32-ba2c-fb5c1ab606b6)
+![Image](https://github.com/casealot/casealot-backend/assets/101981639/4e7031b4-a701-4095-828f-2263c90f6657)
 
 👉 Swagger
+- 권한이 있어야 crud 구현이 가능하기에 swagger 공개
 
-![Image](https://github.com/casealot/casealot-backend/assets/101981639/c8d03995-37be-4140-8e56-7d0e0bf5a57b)
+![Image](https://github.com/casealot/casealot-backend/assets/101981639/bd2dae15-c85a-49eb-bc33-23df2a06938f)
+
+
 
 [//]: # (🍏 API 활용법 &#40;임시~!&#41;)
 
@@ -132,6 +135,8 @@
 - 강의를 통해 강사님께서 작성해주신대로만 토큰을 통해 여러가지 인증을 구현했던 것이 도움이 되었지만,</br>
 이번 강의를 통해 혼자 처음으로 토큰을 구현하고, 사용 해 본 프로젝트였기에 어려움이 많았다. 특히, </br>
 토큰을 파싱하여 권한을 확인하거나, 토큰 소유주의 정보를 가져와 이곳 저곳에 사용하는게 어려웠는데, </br>
-하루하루 검색을 통해 해결방법을 찾고 해결해 나가는 과정이 재미있었던 프로젝트였다.💪
+하루하루 검색을 통해 해결방법을 찾고 해결해 나가는 과정이 재미있었던 프로젝트였다.💪</br>
+요구사항을 제대로 확인하지 못해 마지막에 기능(조건을 갖고있는 조회 기능들..)을 추가했다.. 요구사항을 먼저 꼭 확인할것..
+
 
 
