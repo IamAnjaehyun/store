@@ -25,11 +25,10 @@ public class User extends BaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId; //유저 id
 
-//    private String userName; //유저 이름
+    //    private String userName; //유저 이름
     @Column(unique = true)
     private String userPhoneNum;//유저 휴대폰 번호 겸 아이디
     private String userPassword;//유저 비밀번호
-
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -45,6 +44,7 @@ public class User extends BaseEntity implements UserDetails {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
+
     @Override
     public String getPassword() {
         return userPassword; // 비밀번호

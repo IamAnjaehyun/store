@@ -1,7 +1,6 @@
 package com.jaehyun.store.partner.domain.entity;
 
 import com.jaehyun.store.global.BaseEntity;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

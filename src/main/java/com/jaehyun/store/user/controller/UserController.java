@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/shop/v1/user")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
 
     @ApiOperation(value = "회원 가입", notes = "아이디(휴대폰 번호), 비밀번호를 통해 회원가입 요청을 보냅니다.")
@@ -30,7 +29,6 @@ public class UserController {
         userService.deleteUser(userDeleteDto.getUserPhoneNum(), userDeleteDto.getUserPassword());
         return ResponseEntity.ok("delete successfully");
     }
-
 
     @ApiOperation(value = "로그인", notes = "jwt 토큰을 사용하여 로그인시 토큰을 부여합니다.")
     @PostMapping("/login")

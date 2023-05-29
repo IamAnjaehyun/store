@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @RequestMapping("/shop/v1/reservations")
 @RequiredArgsConstructor
 public class ReservationController {
-
     private final ReservationService reservationService;
 
     // 예약 생성

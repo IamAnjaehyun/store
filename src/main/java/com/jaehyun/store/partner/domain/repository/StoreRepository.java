@@ -6,11 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface StoreRepository extends JpaRepository <Store, Long> {
-//    Long findByStoreName(String storeName);
+public interface StoreRepository extends JpaRepository<Store, Long> {
     Store findByStoreName(String storeName);
+
     Store findIdByStoreName(String storeName);
+
     List<Store> findByUserPhoneNum(String userPhoneNum);
+
     Optional<Store> findByStoreId(Long storeId);
+
     Long findStoreIdByStoreName(String storeName);
 }

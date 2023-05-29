@@ -70,6 +70,7 @@ public class ReviewService {
 
         return ResponseEntity.ok("리뷰가 성공적으로 작성되었습니다.");
     }
+
     //리뷰 삭제
     public ResponseEntity<String> deleteReview(Long reviewId, HttpServletRequest request) {
         //토큰에서 리뷰 작성자의 id 가져옴
@@ -100,5 +101,4 @@ public class ReviewService {
         //리뷰 조회
         return reviewRepository.findByStoreId(store.getStoreId());
     }
-
 }

@@ -23,8 +23,8 @@ public class Reservation extends BaseEntity {
     private LocalDateTime reservationTime; //예약 날짜 및 시간
 
     @Enumerated(EnumType.STRING)
-    private ReservationStatus status= ReservationStatus.DEFAULT; //예약 승인 여부 (기본 PLEASE_WAIT)
+    private ReservationStatus status = ReservationStatus.DEFAULT; //예약 승인 여부 (기본 PLEASE_WAIT)
 
     @Enumerated(EnumType.STRING)
-    private EarlyCheck comeCheck= EarlyCheck.DEFAULT; //10분전 체크 (기본 NOT_CHECK)
+    private EarlyCheck comeCheck = EarlyCheck.DEFAULT; //10분전 체크 (기본 NOT_CHECK)
 }

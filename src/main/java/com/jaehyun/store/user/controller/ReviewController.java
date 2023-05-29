@@ -19,14 +19,13 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    // 리뷰 작성 컨트롤러
-    @ApiOperation(value = "리뷰 작성",notes = "손님이 자신이 이용한 상점에 대해 리뷰를 남길 수 있게 합니다.")
+    @ApiOperation(value = "리뷰 작성", notes = "손님이 자신이 이용한 상점에 대해 리뷰를 남길 수 있게 합니다.")
     @PostMapping("/reviews")
     public ResponseEntity<String> writeReview(@RequestBody ReviewDto reviewDto, HttpServletRequest request) {
         return reviewService.writeReview(reviewDto, request);
     }
 
-    @ApiOperation(value = "리뷰 삭제",notes = "손님이 자신이 이용한 상점에 대해 리뷰를 삭제할 수 있게 합니다.")
+    @ApiOperation(value = "리뷰 삭제", notes = "손님이 자신이 이용한 상점에 대해 리뷰를 삭제할 수 있게 합니다.")
     @DeleteMapping("/delete/{reviewId}")
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId, HttpServletRequest request) {
         return reviewService.deleteReview(reviewId, request);
@@ -34,7 +33,7 @@ public class ReviewController {
 
     @ApiOperation(value = "리뷰 조회", notes = "상점 이름을 입력하여, 해당 상점의 리뷰를 조회한다.")
     @GetMapping("view/{storeName}")
-    public List<Review> viewReview(@PathVariable String storeName){
+    public List<Review> viewReview(@PathVariable String storeName) {
         return reviewService.viewReview(storeName);
     }
 }

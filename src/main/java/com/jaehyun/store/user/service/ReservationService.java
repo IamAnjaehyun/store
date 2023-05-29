@@ -60,12 +60,10 @@ public class ReservationService {
         reservationRepository.deleteByUserPhoneNumAndStoreName(phoneNum, storeName);
     }
 
-
     //10분전에 와서 확인
     public ResponseEntity<String> checkReservation(String userPhoneNum) {
         if (userPhoneNum != null && !userPhoneNum.isEmpty()) {
             LocalDateTime now = LocalDateTime.now();
-
             List<Reservation> reservations = reservationRepository.findByUserPhoneNumAndReservationTimeBefore(userPhoneNum, now);
 
             for (Reservation reservation : reservations) {
