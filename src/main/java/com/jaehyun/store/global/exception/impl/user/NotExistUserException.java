@@ -1,4 +1,4 @@
-package com.jaehyun.store.global.exception.impl;
+package com.jaehyun.store.global.exception.impl.user;
 
 import com.jaehyun.store.global.exception.AbstractException;
 import org.springframework.http.HttpStatus;

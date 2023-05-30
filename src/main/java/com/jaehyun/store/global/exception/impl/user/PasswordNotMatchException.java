@@ -1,9 +1,9 @@
-package com.jaehyun.store.global.exception.impl;
+package com.jaehyun.store.global.exception.impl.user;
 
 import com.jaehyun.store.global.exception.AbstractException;
 import org.springframework.http.HttpStatus;
 
-public class AlreadyExistUserException extends AbstractException {
+public class PasswordNotMatchException extends AbstractException {
     @Override
     public int getStatusCode() {
         return HttpStatus.BAD_REQUEST.value();
@@ -11,6 +11,6 @@ public class AlreadyExistUserException extends AbstractException {
 
     @Override
     public String getMessage() {
-        return "이미 존재하는 사용자 휴대폰 번호입니다.";
+        return "비밀번호가 일치하지 않습니다";
     }
 }

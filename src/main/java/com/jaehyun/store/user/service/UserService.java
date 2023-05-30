@@ -1,9 +1,9 @@
 package com.jaehyun.store.user.service;
 
 import com.jaehyun.store.global.config.JwtTokenProvider;
-import com.jaehyun.store.global.exception.impl.AlreadyExistUserException;
-import com.jaehyun.store.global.exception.impl.PasswordNotMatchException;
-import com.jaehyun.store.global.exception.impl.NotExistUserException;
+import com.jaehyun.store.global.exception.impl.user.AlreadyExistUserException;
+import com.jaehyun.store.global.exception.impl.user.PasswordNotMatchException;
+import com.jaehyun.store.global.exception.impl.user.NotExistUserException;
 import com.jaehyun.store.user.domain.entity.User;
 import com.jaehyun.store.user.domain.dto.UserCreateDto;
 import com.jaehyun.store.user.domain.repository.UserRepository;
