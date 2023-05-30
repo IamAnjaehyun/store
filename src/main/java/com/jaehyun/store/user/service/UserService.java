@@ -1,6 +1,9 @@
 package com.jaehyun.store.user.service;
 
 import com.jaehyun.store.global.config.JwtTokenProvider;
+import com.jaehyun.store.global.exception.impl.AlreadyExistUserException;
+import com.jaehyun.store.global.exception.impl.PasswordNotMatchException;
+import com.jaehyun.store.global.exception.impl.NotExistUserException;
 import com.jaehyun.store.user.domain.entity.User;
 import com.jaehyun.store.user.domain.dto.UserCreateDto;
 import com.jaehyun.store.user.domain.repository.UserRepository;
@@ -21,13 +24,22 @@ public class UserService {
 
     //회원가입
     public Long join(UserCreateDto userCreateDto) {
+        String userPhoneNum = userCreateDto.getUserPhoneNum();
+
+        // 이미 존재하는 사용자인지 확인
+        if (userRepository.existsByUserPhoneNum(userPhoneNum)) {
+            throw new AlreadyExistUserException();
+        }
+
         User user = User.builder()
-                .userPhoneNum(userCreateDto.getUserPhoneNum())
+                .userPhoneNum(userPhoneNum)
                 .userPassword(passwordEncoder.encode(userCreateDto.getUserPassword()))
                 .roles(Collections.singletonList("USER"))
                 .build();
+
         return userRepository.save(user).getUserId();
     }
+
 
     //회원 삭제
     public boolean deleteUser(String userPhoneNum, String password) {
@@ -37,17 +49,20 @@ public class UserService {
             if (passwordEncoder.matches(password, user.getUserPassword())) {
                 userRepository.delete(user);
                 return true;
+            } else {
+                throw new PasswordNotMatchException();
             }
+        } else {
+            throw new NotExistUserException();
         }
-        return false;
     }
 
     //로그인
     public String login(UserCreateDto userCreateDto) {
         User user = userRepository.findByUserPhoneNum(userCreateDto.getUserPhoneNum())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 userPhoneNum 입니다."));
+                .orElseThrow(NotExistUserException::new);
         if (!passwordEncoder.matches(userCreateDto.getUserPassword(), user.getUserPassword())) {
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+            throw new PasswordNotMatchException();
         }
         return jwtTokenProvider.createToken(user.getUserPhoneNum(), user.getRoles());
     }
