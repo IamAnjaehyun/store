@@ -1,5 +1,8 @@
 package com.jaehyun.store.global.config;
 
+import com.jaehyun.store.global.exception.impl.role.UnauthorizedException;
+import com.jaehyun.store.global.exception.impl.token.NotExistTokenException;
+import com.jaehyun.store.global.exception.impl.user.NotExistUserException;
 import com.jaehyun.store.user.domain.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -77,9 +80,9 @@ public class JwtTokenProvider {
 
         if (!ObjectUtils.isEmpty(token) && token.startsWith(TOKEN_PREFIX)) { //토큰형태 포함
             return token.substring(TOKEN_PREFIX.length()); //실제토큰 부위
+        } else {
+            throw new NotExistTokenException();
         }
-
-        return null;
     }
 
     // 토큰의 유효성 + 만료일자 확인
@@ -88,7 +91,7 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
-            return false;
+            throw new NotExistTokenException();
         }
     }
 
@@ -100,10 +103,10 @@ public class JwtTokenProvider {
 
             return userDetails.getAuthorities().stream()
                     .anyMatch(auth -> auth.getAuthority().equals("ADMIN"));
+        } else {
+            log.info("USER access ADMIN's Method");
+            throw new UnauthorizedException();
         }
-
-        log.info("USER access ADMIN's Method");
-        return false;
     }
 
 
@@ -114,8 +117,9 @@ public class JwtTokenProvider {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userPk);
             return userDetails.getAuthorities().stream()
                     .anyMatch(auth -> auth.getAuthority().equals("USER"));
+        }else{
+            throw new UnauthorizedException();
         }
-        return false;
     }
 
     // 토큰에서 회원 정보 추출
@@ -126,7 +130,8 @@ public class JwtTokenProvider {
         if (userDetails instanceof User) {
             User user = (User) userDetails;
             return user.getUserPhoneNum(); // userPhoneNum 반환
+        }else{
+            throw new NotExistUserException();
         }
-        return null;
     }
 }

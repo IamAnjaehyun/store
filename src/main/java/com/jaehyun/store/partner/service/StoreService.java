@@ -4,6 +4,7 @@ import com.jaehyun.store.global.config.JwtTokenProvider;
 import com.jaehyun.store.global.exception.impl.store.AlreadyExistStoreException;
 import com.jaehyun.store.global.exception.impl.role.UnauthorizedException;
 import com.jaehyun.store.global.exception.impl.store.InvalidStoreNameException;
+import com.jaehyun.store.global.exception.impl.store.NotExistStoreException;
 import com.jaehyun.store.partner.domain.entity.Store;
 import com.jaehyun.store.partner.domain.dto.StoreDto;
 import com.jaehyun.store.partner.domain.repository.StoreRepository;
@@ -60,7 +61,7 @@ public class StoreService {
         // 토큰을 통해 사용자 정보를 가져옴
         String token = jwtTokenProvider.resolveToken(request);
         String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
-        Store store = storeRepository.findById(storeId).orElse(null);
+        Store store = storeRepository.findById(storeId).orElseThrow(NotExistStoreException::new);
         String storeUserPhoneNum = store.getUserPhoneNum();
         // 권한이 ADMIN인지 확인(=PARTNER 등록이 되어있는지) && userPhoneNum 과 storeUserPhoneNum이 같은지
         if (jwtTokenProvider.userHasAdminRole(token) && userPhoneNum.equals(storeUserPhoneNum)) { // 권한이 있어야 store 삭제 가능
@@ -100,7 +101,6 @@ public class StoreService {
         if (storeName == null || storeName.isEmpty()) {
             throw new InvalidStoreNameException();
         }
-
         return storeRepository.findByStoreName(storeName);
     }
 

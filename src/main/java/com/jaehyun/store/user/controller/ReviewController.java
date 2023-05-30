@@ -21,14 +21,17 @@ public class ReviewController {
 
     @ApiOperation(value = "리뷰 작성", notes = "손님이 자신이 이용한 상점에 대해 리뷰를 남길 수 있게 합니다.")
     @PostMapping("/reviews")
-    public ResponseEntity<String> writeReview(@RequestBody ReviewDto reviewDto, HttpServletRequest request) {
-        return reviewService.writeReview(reviewDto, request);
+    public ResponseEntity<String> createReview(@RequestBody ReviewDto reviewDto, HttpServletRequest request) {
+        reviewService.createReview(reviewDto, request);
+        return ResponseEntity.ok("review create success!");
+
     }
 
     @ApiOperation(value = "리뷰 삭제", notes = "손님이 자신이 이용한 상점에 대해 리뷰를 삭제할 수 있게 합니다.")
     @DeleteMapping("/delete/{reviewId}")
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId, HttpServletRequest request) {
-        return reviewService.deleteReview(reviewId, request);
+        reviewService.deleteReview(reviewId, request);
+        return ResponseEntity.ok("review delete success!");
     }
 
     @ApiOperation(value = "리뷰 조회", notes = "상점 이름을 입력하여, 해당 상점의 리뷰를 조회한다.")
