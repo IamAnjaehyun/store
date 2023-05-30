@@ -1,6 +1,7 @@
 package com.jaehyun.store.user.service;
 
 import com.jaehyun.store.global.config.JwtTokenProvider;
+import com.jaehyun.store.global.exception.impl.store.NotExistStoreException;
 import com.jaehyun.store.partner.domain.entity.Store;
 import com.jaehyun.store.partner.domain.repository.StoreRepository;
 import com.jaehyun.store.user.domain.dto.ReviewDto;
@@ -34,7 +35,7 @@ public class ReviewService {
         String storeName = reviewDto.getStoreName();
         Store store = storeRepository.findByStoreName(storeName);
         if (store == null) {
-            return ResponseEntity.badRequest().body("can't find store.");
+            throw new NotExistStoreException();
         }
 
         // 새로운 리뷰 엔티티 생성

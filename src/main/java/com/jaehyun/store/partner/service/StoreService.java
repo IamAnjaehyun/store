@@ -1,10 +1,13 @@
 package com.jaehyun.store.partner.service;
 
 import com.jaehyun.store.global.config.JwtTokenProvider;
+import com.jaehyun.store.global.exception.impl.store.AlreadyExistStoreException;
+import com.jaehyun.store.global.exception.impl.role.UnauthorizedException;
+import com.jaehyun.store.global.exception.impl.store.InvalidStoreNameException;
 import com.jaehyun.store.partner.domain.entity.Store;
 import com.jaehyun.store.partner.domain.dto.StoreDto;
 import com.jaehyun.store.partner.domain.repository.StoreRepository;
-import com.jaehyun.store.user.service.UserService;
+import com.jaehyun.store.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,7 @@ import java.util.Map;
 public class StoreService {
     private final StoreRepository storeRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     //상점 등록
     public boolean registerStore(StoreDto storeDto, HttpServletRequest request) {
@@ -32,6 +35,10 @@ public class StoreService {
         String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
 
         if (jwtTokenProvider.userHasAdminRole(token)) { // 권한이 있어야 store 등록 가능
+            //상점 이름 중복 확인
+            if (storeRepository.existsByStoreName(storeDto.getStoreName())) {
+                throw new AlreadyExistStoreException();
+            }
             Store store = new Store();
             store.setStoreName(storeDto.getStoreName());
             store.setStoreLocation(storeDto.getStoreLocation());
@@ -43,7 +50,7 @@ public class StoreService {
             storeRepository.save(store);
             return true;
         } else {
-            return false;
+            throw new UnauthorizedException();
         }
     }
 
@@ -60,7 +67,7 @@ public class StoreService {
             storeRepository.deleteById(storeId);
             return true;
         }else {
-            return false;
+            throw new UnauthorizedException();
         }
     }
 
@@ -84,12 +91,16 @@ public class StoreService {
             storeRepository.save(store);
             return true;
         }else {
-            return false;
+            throw new UnauthorizedException();
         }
     }
 
     //상점 이름으로 조회
     public Store viewStore(String storeName) {
+        if (storeName == null || storeName.isEmpty()) {
+            throw new InvalidStoreNameException();
+        }
+
         return storeRepository.findByStoreName(storeName);
     }
 
