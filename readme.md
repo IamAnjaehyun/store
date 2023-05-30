@@ -6,7 +6,8 @@
 ### ✅ 개발 환경
 - 운영체제 : MacOS
 - 통합개발환경(IDE) : IntelliJ
-- JDK 버전 : JDK 11
+- JAVA Version : JDK 11
+- SpringBoot Version : 2.7.5
 - 데이터 베이스 : MYSQL
 - 빌드 툴 : Gradle
 - 관리 툴 : GitHub
@@ -30,9 +31,7 @@
 
 ## 🛠 ERD
 
-![Image](https://github.com/casealot/casealot-backend/assets/101981639/a5a705cb-75db-4244-9e21-eae90fdc3d76)
-
-
+![Image](https://github.com/casealot/casealot-backend/assets/101981639/9018361c-05d3-40d5-b95b-c9686234409f)
 
 ✅ API요구사항 1
 - 공통 인증 구현
