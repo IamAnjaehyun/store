@@ -1,6 +1,8 @@
 package com.jaehyun.store.partner.service;
 
 import com.jaehyun.store.global.config.JwtTokenProvider;
+import com.jaehyun.store.global.exception.impl.reservation.NoReservationException;
+import com.jaehyun.store.global.exception.impl.user.NotExistUserException;
 import com.jaehyun.store.partner.domain.entity.Store;
 import com.jaehyun.store.partner.domain.repository.StoreRepository;
 import com.jaehyun.store.type.ReservationStatus;
@@ -29,7 +31,7 @@ public class PartnerService {
     //권한 변경
     public void changeRole(String userPhoneNum) {
         User member = userRepository.findByUserPhoneNum(userPhoneNum)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NotExistUserException::new);
 
         member.setRoles(Collections.singletonList("ADMIN")); // roles를 "ADMIN"으로 변경
 
@@ -48,6 +50,9 @@ public class PartnerService {
                 .map(Store::getStoreId)
                 .collect(Collectors.toList());
 
+        if (storeIds.isEmpty()) throw new NoReservationException();
+
+
         // 상점들의 storeId 목록을 통해 예약 목록을 시간 빠른 순서로
         return reservationRepository.findByStoreIdInOrderByReservationTimeAsc(storeIds);
     }
@@ -64,6 +69,8 @@ public class PartnerService {
         List<Long> storeIds = stores.stream()
                 .map(Store::getStoreId)
                 .collect(Collectors.toList());
+
+        if (storeIds.isEmpty()) throw new NoReservationException();
 
         // 현재 날짜와 시간을 가져옴
         LocalDateTime currentDateTime = LocalDateTime.now();

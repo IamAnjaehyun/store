@@ -1,6 +1,7 @@
 package com.jaehyun.store.user.service;
 
 import com.jaehyun.store.global.config.JwtTokenProvider;
+import com.jaehyun.store.global.exception.impl.reservation.NotUseThisStoreException;
 import com.jaehyun.store.global.exception.impl.role.UnauthorizedException;
 import com.jaehyun.store.global.exception.impl.store.InvalidStoreNameException;
 import com.jaehyun.store.global.exception.impl.store.NotExistStoreException;
@@ -20,10 +21,10 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
-    private final ReservationRepository reservationRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final ReviewRepository reviewRepository;
     private final StoreRepository storeRepository;
+    private final ReservationRepository reservationRepository;
 
     public void createReview(ReviewDto reviewDto, HttpServletRequest request) {
         // 토큰으로부터 사용자 핸드폰 번호 가져오기
@@ -35,6 +36,13 @@ public class ReviewService {
         Store store = storeRepository.findByStoreName(storeName);
         if (store == null) {
             throw new NotExistStoreException();
+        }
+
+        //상점 이용하지 않은 고객이 이용하려고 할 때
+        // 예약한 고객인지 확인하여 음식을 먹었는지 검토
+        boolean hasReservation = reservationRepository.existsByStoreIdAndUserPhoneNum(store.getStoreId(), userPhoneNum);
+        if (!hasReservation) {
+            throw new NotUseThisStoreException();
         }
 
         // 새로운 리뷰 엔티티 생성

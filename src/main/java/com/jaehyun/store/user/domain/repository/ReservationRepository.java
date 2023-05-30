@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByUserPhoneNum(String userPhoneNum);
 
     List<Reservation> findByStoreIdIn(List<Long> storeIds);
 
@@ -18,5 +17,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     int deleteByUserPhoneNumAndStoreName(String userPhoneNum, String storeName);
 
-    Reservation findByUserPhoneNumAndStoreId(String userPhoneNum, Long storeId);
+    boolean existsByStoreIdAndUserPhoneNum(Long storeId, String userPhoneNum);
 }

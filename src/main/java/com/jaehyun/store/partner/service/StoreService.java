@@ -14,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +22,6 @@ import java.util.Map;
 public class StoreService {
     private final StoreRepository storeRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserRepository userRepository;
 
     //상점 등록
     public boolean registerStore(StoreDto storeDto, HttpServletRequest request) {
@@ -67,7 +63,7 @@ public class StoreService {
         if (jwtTokenProvider.userHasAdminRole(token) && userPhoneNum.equals(storeUserPhoneNum)) { // 권한이 있어야 store 삭제 가능
             storeRepository.deleteById(storeId);
             return true;
-        }else {
+        } else {
             throw new UnauthorizedException();
         }
     }
@@ -77,24 +73,32 @@ public class StoreService {
         // 토큰을 통해 사용자 정보를 가져옴
         String token = jwtTokenProvider.resolveToken(request);
         String userPhoneNum = jwtTokenProvider.getUserPhoneNum(token);
-        Store store = storeRepository.findById(storeId).orElse(null);
-        String storeUserPhoneNum = store.getUserPhoneNum();
-        // 권한이 ADMIN인지 확인(=PARTNER 등록이 되어있는지) && userPhoneNum 과 storeUserPhoneNum이 같은지
-        if (jwtTokenProvider.userHasAdminRole(token) && userPhoneNum.equals(storeUserPhoneNum)) { // 권한이 있어야 store 수정 가능
-            store.setStoreName(storeDto.getStoreName());
-            store.setStoreDescription(storeDto.getStoreDescription());
-            store.setStoreLocation(storeDto.getStoreLocation());
-            store.setDistance(storeDto.getDistance());
-            store.setAverageRating(store.getAverageRating());
-            store.setTotalReviewCount(0);
-            store.setTotalRating(0L);
-            store.setTotalRating(0L);
-            storeRepository.save(store);
-            return true;
-        }else {
-            throw new UnauthorizedException();
+
+        Optional<Store> optionalStore = storeRepository.findById(storeId);
+        if (optionalStore.isPresent()) {
+            Store store = optionalStore.get();
+            String storeUserPhoneNum = store.getUserPhoneNum();
+
+            // 권한이 ADMIN인지 확인(=PARTNER 등록이 되어있는지) && userPhoneNum 과 storeUserPhoneNum이 같은지
+            if (jwtTokenProvider.userHasAdminRole(token) && userPhoneNum.equals(storeUserPhoneNum)) { // 권한이 있어야 store 수정 가능
+                store.setStoreName(storeDto.getStoreName());
+                store.setStoreDescription(storeDto.getStoreDescription());
+                store.setStoreLocation(storeDto.getStoreLocation());
+                store.setDistance(storeDto.getDistance());
+                store.setAverageRating(store.getAverageRating());
+                store.setTotalReviewCount(0);
+                store.setTotalRating(0L);
+                store.setTotalRating(0L);
+                storeRepository.save(store);
+                return true;
+            } else {
+                throw new UnauthorizedException();
+            }
+        } else {
+            throw new NotExistStoreException();
         }
     }
+
 
     //상점 이름으로 조회
     public Store viewStore(String storeName) {
