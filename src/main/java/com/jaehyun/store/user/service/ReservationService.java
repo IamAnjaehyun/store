@@ -1,13 +1,15 @@
 package com.jaehyun.store.user.service;
 
 import com.jaehyun.store.global.config.JwtTokenProvider;
+import com.jaehyun.store.global.exception.impl.reservation.NotExistReservationException;
+import com.jaehyun.store.global.exception.impl.store.NotExistStoreException;
+import com.jaehyun.store.global.exception.impl.user.NotExistUserException;
 import com.jaehyun.store.partner.domain.entity.Store;
 import com.jaehyun.store.partner.domain.repository.StoreRepository;
+import com.jaehyun.store.type.EarlyCheck;
 import com.jaehyun.store.user.domain.entity.Reservation;
 import com.jaehyun.store.user.domain.repository.ReservationRepository;
-import com.jaehyun.store.type.EarlyCheck;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,7 @@ public class ReservationService {
     private final StoreRepository storeRepository;
 
     //예약 생성
-    public ResponseEntity<String> createReservation(String storeName, LocalDateTime reservationTime, HttpServletRequest request) {
+    public void createReservation(String storeName, LocalDateTime reservationTime, HttpServletRequest request) {
         // 토큰으로 phoneNum 가져오기
         String token = jwtTokenProvider.resolveToken(request);
         String phoneNum = jwtTokenProvider.getUserPhoneNum(token);
@@ -33,7 +35,7 @@ public class ReservationService {
         Store store = storeRepository.findByStoreName(storeName);
         if (store == null) {
             // 상점이 존재하지 않을 경우 처리
-            return ResponseEntity.badRequest().body("Store not found.");
+            throw new NotExistStoreException();
         }
 
         Long storeId = store.getStoreId();
@@ -47,21 +49,28 @@ public class ReservationService {
 
         // 예약 데이터를 데이터베이스에 저장
         reservationRepository.save(reservation);
-
-        return ResponseEntity.ok("Reservation created successfully");
     }
 
+
+    //예약 취소
     @Transactional
     public void cancelReservation(String storeName, HttpServletRequest request) {
+        if (!storeRepository.existsByStoreName(storeName)) {
+            throw new NotExistStoreException();
+        }
         // 토큰으로 phoneNum 가져오기
         String token = jwtTokenProvider.resolveToken(request);
         String phoneNum = jwtTokenProvider.getUserPhoneNum(token);
 
-        reservationRepository.deleteByUserPhoneNumAndStoreName(phoneNum, storeName);
+        int cancelCnt = reservationRepository.deleteByUserPhoneNumAndStoreName(phoneNum, storeName);
+        if (cancelCnt == 0) {
+            throw new NotExistReservationException();
+        }
+
     }
 
     //10분전에 와서 확인
-    public ResponseEntity<String> checkReservation(String userPhoneNum) {
+    public void checkReservation(String userPhoneNum) {
         if (userPhoneNum != null && !userPhoneNum.isEmpty()) {
             LocalDateTime now = LocalDateTime.now();
             List<Reservation> reservations = reservationRepository.findByUserPhoneNumAndReservationTimeBefore(userPhoneNum, now);
@@ -70,10 +79,8 @@ public class ReservationService {
                 reservation.setComeCheck(EarlyCheck.COME);
                 reservationRepository.save(reservation);
             }
-
-            return ResponseEntity.ok("Reservations checked successfully.");
         } else {
-            return ResponseEntity.badRequest().body("Missing 'userPhoneNum' parameter.");
+            throw new NotExistUserException();
         }
     }
 }
