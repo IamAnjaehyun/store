@@ -7,6 +7,7 @@ import com.jaehyun.store.global.exception.impl.user.NotExistUserException;
 import com.jaehyun.store.user.domain.entity.User;
 import com.jaehyun.store.user.domain.dto.UserCreateDto;
 import com.jaehyun.store.user.domain.repository.UserRepository;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,8 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
     //회원가입
-    public Long join(UserCreateDto userCreateDto) {
+    @Transactional
+    public void join(UserCreateDto userCreateDto) {
         String userPhoneNum = userCreateDto.getUserPhoneNum();
 
         // 이미 존재하는 사용자인지 확인
@@ -37,18 +39,17 @@ public class UserService {
                 .roles(Collections.singletonList("USER"))
                 .build();
 
-        return userRepository.save(user).getUserId();
+        userRepository.save(user);
     }
 
 
     //회원 삭제
-    public boolean deleteUser(String userPhoneNum, String password) {
+    public void deleteUser(String userPhoneNum, String password) {
         Optional<User> optionalUser = userRepository.findByUserPhoneNum(userPhoneNum);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (passwordEncoder.matches(password, user.getUserPassword())) {
                 userRepository.delete(user);
-                return true;
             } else {
                 throw new PasswordNotMatchException();
             }
