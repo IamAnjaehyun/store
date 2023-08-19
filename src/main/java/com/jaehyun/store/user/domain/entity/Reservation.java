@@ -3,15 +3,21 @@ package com.jaehyun.store.user.domain.entity;
 import com.jaehyun.store.global.BaseEntity;
 import com.jaehyun.store.type.EarlyCheck;
 import com.jaehyun.store.type.ReservationStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Builder
+@Entity
 public class Reservation extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

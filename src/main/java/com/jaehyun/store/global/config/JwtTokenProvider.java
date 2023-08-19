@@ -27,7 +27,7 @@ import java.util.List;
 public class JwtTokenProvider {
 
     //yml 파일에서 가져온 key
-    @Value("{spring.jwt.secret}")
+    @Value("${spring.jwt.secret}")
     private String secretKey;
 
     public static final String TOKEN_HEADER = "Authorization"; //토큰헤더
@@ -36,7 +36,8 @@ public class JwtTokenProvider {
     // 결론적으로 Authorization | Bearer +{___}
 
     // 토큰 유효시간 1시간
-    private long tokenValidTime = 1000 * 60 * 60; //1시간(1000 * 60 * 60)
+    @Value("${spring.jwt.time}")
+    private long tokenValidTime; //1시간(1000 * 60 * 60)
 
     private final UserDetailsService userDetailsService;
 
@@ -101,8 +102,6 @@ public class JwtTokenProvider {
             return userDetails.getAuthorities().stream()
                     .anyMatch(auth -> auth.getAuthority().equals("ADMIN"));
         }
-
-        log.info("USER access ADMIN's Method");
         return false;
     }
 

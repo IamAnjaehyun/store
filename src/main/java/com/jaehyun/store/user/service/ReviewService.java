@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,8 @@ public class ReviewService {
     private final StoreRepository storeRepository;
     private final ReservationRepository reservationRepository;
 
+    //리뷰 생성
+    @Transactional
     public void createReview(ReviewDto reviewDto, HttpServletRequest request) {
         // 토큰으로부터 사용자 핸드폰 번호 가져오기
         String token = jwtTokenProvider.resolveToken(request);
@@ -46,12 +49,13 @@ public class ReviewService {
         }
 
         // 새로운 리뷰 엔티티 생성
-        Review review = new Review();
-        review.setUserPhoneNum(userPhoneNum);
-        review.setStoreId(store.getStoreId());
-        review.setStoreName(store.getStoreName());
-        review.setReviewText(reviewDto.getReviewText());
-        review.setStarRating(reviewDto.getStarRating());
+        Review review = Review.builder()
+            .userPhoneNum(userPhoneNum)
+            .storeId(store.getStoreId())
+            .storeName(store.getStoreName())
+            .reviewText(reviewDto.getReviewText())
+            .starRating(reviewDto.getStarRating())
+            .build();
 
         // 리뷰를 데이터베이스에 저장
         reviewRepository.save(review);
@@ -78,6 +82,7 @@ public class ReviewService {
     }
 
     //리뷰 삭제
+    @Transactional
     public void deleteReview(Long reviewId, HttpServletRequest request) {
         //토큰에서 리뷰 작성자의 id 가져옴
         String token = jwtTokenProvider.resolveToken(request);
@@ -96,6 +101,7 @@ public class ReviewService {
     }
 
     //상점 이름으로 상점에 대한 모든 리뷰 조회
+    @Transactional(readOnly = true)
     public List<Review> viewReview(String storeName) {
         //상점 조회
         Store store = storeRepository.findByStoreName(storeName);
@@ -104,6 +110,6 @@ public class ReviewService {
             throw new InvalidStoreNameException();
         }
         //리뷰 조회
-        return reviewRepository.findByStoreId(store.getStoreId());
+        return reviewRepository.findAllByStoreId(store.getStoreId());
     }
 }

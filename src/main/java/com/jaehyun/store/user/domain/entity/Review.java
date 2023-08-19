@@ -1,14 +1,20 @@
 package com.jaehyun.store.user.domain.entity;
 
 import com.jaehyun.store.global.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Setter
+@Entity
 public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
