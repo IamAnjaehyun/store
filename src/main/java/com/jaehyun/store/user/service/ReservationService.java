@@ -26,6 +26,7 @@ public class ReservationService {
     private final StoreRepository storeRepository;
 
     //예약 생성
+    @Transactional
     public void createReservation(String storeName, LocalDateTime reservationTime, HttpServletRequest request) {
         // 토큰으로 phoneNum 가져오기
         String token = jwtTokenProvider.resolveToken(request);
@@ -37,15 +38,13 @@ public class ReservationService {
             // 상점이 존재하지 않을 경우 처리
             throw new NotExistStoreException();
         }
-
-        Long storeId = store.getStoreId();
-
         // 예약 생성을 위해 필요한 값들을 사용하여 Reservation 엔티티를 생성
-        Reservation reservation = new Reservation();
-        reservation.setUserPhoneNum(phoneNum);
-        reservation.setStoreName(storeName);
-        reservation.setStoreId(storeId);
-        reservation.setReservationTime(reservationTime);
+        Reservation reservation = Reservation.builder()
+            .userPhoneNum(phoneNum)
+            .storeName(storeName)
+            .storeId(store.getStoreId())
+            .reservationTime(reservationTime)
+            .build();
 
         // 예약 데이터를 데이터베이스에 저장
         reservationRepository.save(reservation);
@@ -70,6 +69,7 @@ public class ReservationService {
     }
 
     //10분전에 와서 확인
+    @Transactional
     public void checkReservation(String userPhoneNum) {
         if (userPhoneNum != null && !userPhoneNum.isEmpty()) {
             LocalDateTime now = LocalDateTime.now();
