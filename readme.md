@@ -28,6 +28,7 @@
     - SpringBoot, Spring Data JPA
 - 데이터베이스
     - MySQL, MySQL Workbench
+    - /
 
 ## 🛠 ERD
 
