@@ -1,4 +1,4 @@
-## Spring-boot Store API
+## Spring-boot Store API     
 
 ### ✅ 프로젝트 설명
 - 스프링부트를 이용하여 만든 Store API입니다.
